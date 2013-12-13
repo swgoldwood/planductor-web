@@ -1,0 +1,9 @@
+<h1>Competitions</h1>
+
+<div class="list-group">
+  <%= render @competitions %>
+</div>
+
+<% if current_user and (current_user.organiser or current_user.admin) %>
+  <%= link_to 'New Competition', new_competition_path, class: 'btn btn-default' %>
+<% end %>

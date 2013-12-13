@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PlanductorWeb</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "custom" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="application-container"">
+    <%= render 'layouts/menu_bar' %>
+    <div class="container">
+      <% flash.each do |key, value| %>
+        <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+      <% end %>
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

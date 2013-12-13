@@ -1,0 +1,38 @@
+<h1>Competition: <%= @competition.name %></h3>
+<p>
+  <b>Organiser: <%= @competition.user.name if @competition.user %></b>
+</p>
+
+<p>
+  <b>Description:</b><br />
+  <%= @competition.description %>
+</p>
+
+<h3>Participants</h3>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Planner name</th>
+      <th>Planner location</th>
+      <th>Submitter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @competition.planners.each do |planner| %>
+      <tr>
+        <td><%= planner.name %></td>
+        <td><%= planner.location %></td>
+        <td><%= planner.user.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if current_user %>
+  <h3>Submit planner for participation</h3>
+  <% if current_user and current_user.available_planners?(@competition) %>
+    <%= render 'participate' %>
+  <% else %>
+    <p><b>No available planners</b></p>
+  <% end %>
+<% end %>

@@ -1,0 +1,4 @@
+<a href="<%= competition_path(competition) %>" class="list-group-item">
+  <h4 class="list-group-item-heading"><%= competition.name.capitalize %></h4>
+  <p class="list-group-item-text"><%= pluralize competition.participants.count, 'participant' %></p>
+</a>

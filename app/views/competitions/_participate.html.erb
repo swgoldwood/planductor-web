@@ -1,0 +1,8 @@
+<%= bootstrap_form_for(@competition.participants.build) do |f| %>
+  <div class="field"><%= f.hidden_field :competition_id %></div>
+  <div class="field">
+    <%= f.label "Your available planners:" %><br />
+    <%= f.collection_select(:planner_id, @current_user_planners, :id, :name) %>
+  </div>
+  <%= f.submit "Submit Planner", class: "btn btn-large btn-primary" %>
+<% end %>

@@ -1,0 +1,23 @@
+<div class="container">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="nav-collapse">
+      <div class="navbar-inner">
+        <ul class="nav navbar-nav">
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Users", users_path %></li>
+          <li><%= link_to "Competitions", competitions_path %></li>
+          <li><%= link_to "Domains", domains_path %></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="margin-right:0px">
+          <% if current_user %>
+            <li><%= link_to "Account", current_user %></li>
+            <li><%= link_to "Sign out", sign_out_path %></li>
+          <% else %>
+            <li><%= link_to "Sign up", sign_up_path %></li>
+            <li><%= link_to "Sign in", sign_in_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
