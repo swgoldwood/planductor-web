@@ -1,38 +1,54 @@
-<h1>Competition: <%= @competition.name %></h3>
-<p>
-  <b>Organiser: <%= @competition.user.name if @competition.user %></b>
-</p>
-
-<p>
-  <b>Description:</b><br />
-  <%= @competition.description %>
-</p>
-
-<h3>Participants</h3>
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Planner name</th>
-      <th>Planner location</th>
-      <th>Submitter</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @competition.planners.each do |planner| %>
-      <tr>
-        <td><%= planner.name %></td>
-        <td><%= planner.location %></td>
-        <td><%= planner.user.name %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<% if current_user %>
-  <h3>Submit planner for participation</h3>
-  <% if current_user and current_user.available_planners?(@competition) %>
-    <%= render 'participate' %>
-  <% else %>
-    <p><b>No available planners</b></p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default"> 
+      <div class="panel-heading">
+        <h1><%= @competition.name %></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          <b>Organiser: <%= @competition.user.name if @competition.user %></b>
+        </p>
+        
+        <p>
+          <b>Description:</b><br />
+          <%= @competition.description %>
+        </p>
+      </div>
+    </div>
+  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Participants</h3>
+      </div>
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Planner name</th>
+            <th>Planner location</th>
+            <th>Submitter</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @competition.planners.each do |planner| %>
+            <tr>
+              <td><%= planner.name %></td>
+              <td><%= planner.location %></td>
+              <td><%= planner.user.name %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  
+  <% if current_user %>
+    <div class="panel panel-default">
+        <h3>Submit planner for participation</h3>
+        <% if current_user and current_user.available_planners?(@competition) %>
+          <%= render 'participate' %>
+        <% else %>
+          <p><b>No available planners</b></p>
+        <% end %>
+    </div>
   <% end %>
-<% end %>
+  </div>
+</div>
