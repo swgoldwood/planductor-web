@@ -1,4 +1,14 @@
 class PlannersController < ApplicationController
+
+  def index
+    @planners = Planner.all
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @planners }
+    end
+  end
+
   def create
     @planner = Planner.new(params[:planner])
 
