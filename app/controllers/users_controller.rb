@@ -85,7 +85,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
-    unless current_user == @user or current_user.admin?
+    unless current_user_or_admin
       flash[:warning] = 'Not signed in correctly'
       redirect_to root_url
     else
