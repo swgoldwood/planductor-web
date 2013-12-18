@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Competition's Experiments</h3>
+  </div>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Domain name</th>
+        <th>Problem number</th>
+        <% unless @competition.published %>
+        <th>Remove?</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @experiments.each do |ex| %>
+        <tr>
+          <td><%= ex.domain.name %></td>
+          <td><%= ex.problem_number %></td>
+          <% unless @competition.published %>
+          <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

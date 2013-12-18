@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Add Experiments</h3>
+  </div>
+  <div class="panel-body">
+    <p><b>Don't forget to add experiments to the competition before publishing!</b></p>
+    <%= render 'shared/experiment_form' %>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Publish Competition</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Once you've finished adding experiments for the competition, click the publish button below to allow participants!
+    </p>
+    <%= form_for(@competition) do |f| %>
+      <%= f.hidden_field :published, value: 1 %>
+      <%= f.submit "Publish", class: "btn btn-large btn-default", confirm: 'Are you sure?' %>
+    <% end %>
+  </div>
+</div>

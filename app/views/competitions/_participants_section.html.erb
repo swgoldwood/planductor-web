@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Participants</h3>
+  </div>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Planner name</th>
+        <th>Planner location</th>
+        <th>Submitter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @competition.planners.each do |planner| %>
+        <tr>
+          <td><%= planner.name %></td>
+          <td><%= planner.location %></td>
+          <td><%= planner.user.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Submit planner for participation</h3>
+  </div>
+  <div class="panel-body">
+    <% if current_user == nil %>
+      <p><b>Not signed in</b></p>
+      <p><%= link_to 'Sign in', sign_in_path %></p>
+    <% elsif current_user.available_planners?(@competition) %>
+      <%= render 'participate' %>
+    <% else %>
+      <p><b>No available planners</b></p>
+    <% end %>
+  </div>
+</div>

@@ -14,9 +14,15 @@ class CompetitionsController < ApplicationController
   # GET /competitions/1.json
   def show
     @competition = Competition.find(params[:id])
+    @experiments = Experiment.where(params[:id])
 
-    if current_user and current_user.available_planners?(@competition)
-      @current_user_planners = current_user.available_planners(@competition)
+    if @competition.published
+      if current_user and current_user.available_planners?(@competition)
+        @current_user_planners = current_user.available_planners(@competition)
+      end
+    else
+      @experiment = @competition.experiments.build
+      @all_domains = Domain.all
     end
 
     respond_to do |format|
@@ -64,7 +70,13 @@ class CompetitionsController < ApplicationController
 
     respond_to do |format|
       if @competition.update_attributes(params[:competition])
-        format.html { redirect_to @competition, notice: 'Competition was successfully updated.' }
+        if @competition.published
+          flash[:success] = 'Competition is now published'
+        else
+          flash[:success] = 'Competition was created. Add experiments and mark as published when ready!'
+        end
+
+        format.html { redirect_to @competition }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
