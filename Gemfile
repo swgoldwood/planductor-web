@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -17,6 +17,15 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails', '~> 3.0.0.beta'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'growl'
+  gem 'guard-spork'
+  gem 'spork'
+  gem 'factory_girl_rails'
+  gem 'cucumber-rails', require: false
 end
 
 # Gems used only for assets and not required
