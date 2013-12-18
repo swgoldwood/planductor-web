@@ -10,6 +10,7 @@ PlanductorWeb::Application.routes.draw do
   resources :sessions
   resources :participants
   resources :domains
+  resources :experiments
 
   root to: 'users#index'
 

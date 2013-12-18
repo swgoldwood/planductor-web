@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1>Planner: <%= @planner.name %></h1>
+      </div>
+      <div class="panel-body">
+        <p>
+          <b>Location:</b> <%= @planner.location %>
+        </p>  
+        <p>
+          <b>Competitions entered:</b>
+        </p>
+        <% if @planner.competitions.any? %>
+        <ul class="list-group">
+          <% @planner.competitions.each do |comp| %>
+            <%= link_to comp.name, competition_path(comp), class: 'list-group-item' %>
+          <% end %>
+        </ul>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

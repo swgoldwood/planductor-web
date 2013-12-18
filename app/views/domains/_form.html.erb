@@ -2,7 +2,6 @@
   <% if @domain.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@domain.errors.count, "error") %> prohibited this domain from being saved:</h2>
-
       <ul>
       <% @domain.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -18,6 +17,10 @@
   <div class="field">
     <%= f.label :location %><br />
     <%= f.text_field :location %>
+  </div>
+  <div class="field">
+    <%= f.label :number_of_problems %>
+    <%= f.select(:number_of_problems, (1..100), class: 'form-control') %>
   </div>
   <div class="field">
     <%= f.hidden_field :user_id %>

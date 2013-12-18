@@ -9,16 +9,19 @@ class PlannersController < ApplicationController
     end
   end
 
+  def show
+    @planner = Planner.find_by_id(params[:id])
+  end
+
   def create
     @planner = Planner.new(params[:planner])
 
     if @planner.save
-      flash[:notice] = 'Planner was successfully added'
-      redirect_to(@planner.user)
+      flash[:success] = 'Planner was successfully added'
     else
-      flash[:notice] = 'Error adding planner'
-      redirect_to(@planner.user)
+      flash[:warning] = 'Error adding planner'
     end
+    redirect_to(@planner.user)
   end
 
   def destroy

@@ -5,9 +5,11 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participant.save
-        format.html { redirect_to @competition, notice: 'Planner was successfully added.' }
+        flash[:success] = 'Planner was successfully added.'
+        format.html { redirect_to @competition }
       else
-        format.html { redirect_to @competition, error: 'Planner was not added' }
+        flash[:warning] = 'There was a problem. Planner was not added'
+        format.html { redirect_to @competition }
       end
     end
   end

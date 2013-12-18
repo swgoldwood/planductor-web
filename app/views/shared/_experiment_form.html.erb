@@ -1,0 +1,12 @@
+<%= form_for(@experiment) do |f| %>
+  <%= f.hidden_field :competition_id %>
+  <div class="field">
+    <%= f.label :domain_id %><br />
+    <%= f.collection_select(:domain_id, @all_domains, :id, :name, {}, {class: 'form-control'}) %>
+  </div>
+  <div class="field">
+    <%= f.label :problem_number %><br />
+    <%= f.select(:problem_number, (1..100), class: 'form-control') %>
+  </div>
+  <%= f.submit "Add Experiment", class: "btn btn-large btn-default" %>
+<% end %>
