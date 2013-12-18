@@ -17,7 +17,7 @@
     </p>
     <%= form_for(@competition) do |f| %>
       <%= f.hidden_field :published, value: 1 %>
-      <%= f.submit "Publish", class: "btn btn-large btn-default", confirm: 'Are you sure?' %>
+      <%= f.submit "Publish", class: "btn btn-large btn-default", confirm: 'Are you sure? This cannot be reversed once competition has a participant.' %>
     <% end %>
   </div>
 </div>
