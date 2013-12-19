@@ -1,3 +1,3 @@
 planductor-web
 ==============
-Web application for planductor AI Planning competitions
+Web application for AI Planning competitions.
