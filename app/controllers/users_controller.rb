@@ -16,6 +16,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @planners = @user.planners
     @new_planner = Planner.new(user_id: @user.id)
+    @competitions = @user.competitions
 
     respond_to do |format|
       format.html # show.html.erb
