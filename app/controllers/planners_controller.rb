@@ -16,12 +16,20 @@ class PlannersController < ApplicationController
   def create
     @planner = Planner.new(params[:planner])
 
+    user = @planner.user
+
     if @planner.save
       flash[:success] = 'Planner was successfully added'
     else
-      flash[:warning] = 'Error adding planner'
+      if @planner.errors.any?
+        flash[:warning] = @planner.errors.first
+      else
+        flash[:warning] = 'Error adding planner'
+      end
+      @planner.destroy
     end
-    redirect_to(@planner.user)
+
+    redirect_to(user)
   end
 
   def destroy
