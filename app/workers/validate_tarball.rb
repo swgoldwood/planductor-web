@@ -26,6 +26,6 @@ class ValidateTarball
 
       planner.save!
 
-      #FileUtils.rm_rf(temp_dir)
+      FileUtils.rm_rf(temp_dir)
   end
 end
