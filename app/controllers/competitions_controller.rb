@@ -14,7 +14,7 @@ class CompetitionsController < ApplicationController
   # GET /competitions/1.json
   def show
     @competition = Competition.find(params[:id])
-    @experiments = Experiment.where(params[:id])
+    @experiments = Experiment.where(competition_id: params[:id])
 
     if @competition.published
       if current_user and current_user.available_planners?(@competition)
