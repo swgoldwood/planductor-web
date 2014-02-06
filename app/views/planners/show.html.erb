@@ -6,8 +6,14 @@
       </div>
       <div class="panel-body">
         <p>
-          <b>Location:</b> <%= @planner.location %>
-        </p>  
+          <b>Owner:</b> <%= link_to @planner.user.name, @planner.user %>
+        </p>
+        <p>
+          <b>File Name:</b> <%= link_to @planner.tarball_file_name, @planner.tarball.url %>
+        </p>
+        <p>
+          <b>File Size:</b> <%= pluralize @planner.tarball_file_size, 'byte' %>
+        </p>
         <p>
           <b>Competitions entered:</b>
         </p>
