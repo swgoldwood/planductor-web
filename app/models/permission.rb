@@ -15,8 +15,7 @@ class Permission
   end
 
   def allow?(controller, action, resource = nil)
-    allowed = @allow_all || @allowed_actions[[controller.to_s, action.to_s]] ||
-                @allowed_actions[[controller.to_s, :all.to_s]]
+    allowed = @allow_all || @allowed_actions[[controller.to_s, action.to_s]] || @allowed_actions[[controller.to_s, :all.to_s]]
     allowed && (allowed == true || resource && allowed.call(resource))
   end
 
