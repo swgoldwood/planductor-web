@@ -5,17 +5,15 @@
   <table class="table table-condensed table-hover">
     <thead>
       <tr>
-        <th>Planner name</th>
-        <th>Planner location</th>
+        <th>Planner</th>
         <th>Submitter</th>
       </tr>
     </thead>
     <tbody>
       <% @competition.planners.each do |planner| %>
         <tr>
-          <td><%= planner.name %></td>
-          <td><%= planner.location %></td>
-          <td><%= planner.user.name %></td>
+          <td><%= link_to planner.name, planner %></td>
+          <td><%= link_to planner.user.name, planner.user %></td>
         </tr>
       <% end %>
     </tbody>
