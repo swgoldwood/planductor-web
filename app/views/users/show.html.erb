@@ -31,10 +31,21 @@
           <b>Add new planner..</b>
         </div>
         <div class="panel-body">
+          <% if @new_planner.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@new_planner.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+              <ul>
+              <% @new_planner.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
           <%= bootstrap_form_for(@new_planner) do |f| %>
               <%= f.hidden_field :user_id %>
               <%= f.text_field :name %>
-              <%= f.text_field :location %>
+              <%= f.file_field :tarball %>
               <%= f.submit 'Add' %>
           <% end %>
         </div>
