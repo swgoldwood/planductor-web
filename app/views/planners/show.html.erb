@@ -15,6 +15,9 @@
           <b>File Size:</b> <%= pluralize @planner.tarball_file_size, 'byte' %>
         </p>
         <p>
+          <b>Validation Status</b>: <%= @planner.status_string %>
+        </p>
+        <p>
           <b>Competitions entered:</b>
         </p>
         <% if @planner.competitions.any? %>

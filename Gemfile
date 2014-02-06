@@ -8,7 +8,8 @@ gem 'rails', '3.2.13'
 gem 'bcrypt-ruby', require: 'bcrypt'
 gem 'bootstrap-sass', '~> 3.0.3.0'
 gem 'bootstrap_form'
-gem "paperclip", "~> 3.0"
+gem 'paperclip', '~> 3.0'
+gem 'resque', '1.26.pre.0'
 
 group :development do
   gem 'better_errors'

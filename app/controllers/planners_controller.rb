@@ -20,6 +20,7 @@ class PlannersController < ApplicationController
 
     if @planner.save
       flash[:success] = 'Planner was successfully added'
+      Resque.enqueue(ValidateTarball, @planner.id)
     else
       if @planner.errors.any?
         flash[:warning] = @planner.errors.first
