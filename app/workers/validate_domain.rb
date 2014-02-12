@@ -18,12 +18,17 @@ class ValidateDomain < ValidateBase
     system_call = "tar xf '#{temp_dir}/#{domain.tarball.original_filename}' -C '#{out_temp_dir}'" 
     system(system_call)
 
-    unless File.exists?("#{out_temp_dir}/domain.pddl")
+    domain_location = "#{out_temp_dir}/domain.pddl" 
+
+    if File.exists?(domain_location)
+      plain_text = File.read(domain_location)
+      domain.plain_text = plain_text
+    else 
       domain.status = 'error'
       domain.save!
       FileUtils.rm_rf(temp_dir)
       return
-    end 
+    end
 
     domain_files = Dir.entries(out_temp_dir)
 
