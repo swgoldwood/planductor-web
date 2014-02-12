@@ -17,11 +17,18 @@ class ApplicationController < ActionController::Base
       @current_permission ||= Permission.new(current_user)
     end
 
+    def current_resource
+      nil
+    end
+
     def authorize
-      unless current_permission.allow?(params[:controller], params[:action])
-        flash[:danger] = 'Not authorized'
-        redirect_to root_url
+      unless current_permission.allow?(params[:controller], params[:action], current_resource)
+        unauthorized
       end
     end
 
+    def unauthorized
+      flash[:danger] = 'Not authorized'
+      redirect_to root_url
+    end
 end
