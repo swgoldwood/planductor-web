@@ -1,17 +1,32 @@
 class Permission
 
   def initialize(user = nil)
+    #admins and organisers
     if user and user.admin
       allow_all
     elsif user and user.organiser
       allow :competitions, [:new, :create]
-      allow :competitions, [:edit, :update, :destroy] do |comp|
-        comp.user_id == user.id
+      allow :competitions, [:edit, :update, :destroy] do |competition|
+        competition.user_id == user.id
       end
       allow :domains, [:all]
     end
-    allow [:competitions, :domains], [:index, :show]
-    allow [:planners, :users, :sessions, :participants], [:all]
+
+    #normal users
+    if user
+      allow :planners, [:new, :create]
+      allow :planners, [:edit, :update, :destroy] do |planner|
+        planner.user_id == user.id
+      end
+      allow :users, [:edit, :update, :destroy] do |user|
+        user.id == user.id
+      end
+      allow :participants, [:create]
+    end
+
+    #guests
+    allow [:competitions, :domains, :planners, :users, :sessions, :participants], [:index, :show]
+    allow :sessions, [:create, :destroy, :new]
   end
 
   def allow?(controller, action, resource = nil)

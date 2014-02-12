@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @planners = @user.planners
-    @new_planner = Planner.new(user_id: @user.id)
     @competitions = @user.competitions
 
     respond_to do |format|
@@ -99,6 +98,9 @@ class UsersController < ApplicationController
 
 
   private
+    def current_resource
+      @current_resource ||= User.find_by_id(params[:id]) if params[:id]
+    end
 
     def current_user_or_admin
       current_user and ( current_user == @user or current_user.admin? )

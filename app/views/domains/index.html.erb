@@ -3,7 +3,6 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Location</th>
     <th>User</th>
     <th></th>
     <th></th>
@@ -13,7 +12,6 @@
 <% @domains.each do |domain| %>
   <tr>
     <td><%= domain.name %></td>
-    <td><%= domain.location %></td>
     <td><%= domain.user_id %></td>
     <td><%= link_to 'Show', domain %></td>
     <td><%= link_to 'Edit', edit_domain_path(domain) %></td>

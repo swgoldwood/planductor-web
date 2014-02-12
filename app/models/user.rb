@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
 
   def available_planners(competition)
     self.planners.select{
-      |planner| not competition.planners.include?(planner)
+      |planner| not competition.planners.include?(planner) and planner.status == 'verified'
     }
   end
 

@@ -44,6 +44,7 @@ class DomainsController < ApplicationController
 
     respond_to do |format|
       if @domain.save
+        Resque.enqueue(ValidateDomain, @domain.id)
         format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
         format.json { render json: @domain, status: :created, location: @domain }
       else
@@ -80,4 +81,9 @@ class DomainsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def current_resource
+      @current_resource ||= Domain.find_by_id(params[:id]) if params[:id]
+    end
 end
