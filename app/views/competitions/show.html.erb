@@ -6,7 +6,7 @@
       </div>
       <div class="panel-body">
         <p>
-          <b>Organiser:</b> <%= @competition.user.name if @competition.user %>
+          <b>Organiser:</b> <%= link_to @competition.user.name, @competition.user %>
         </p>
         <p>
           <b>Description:</b><br />
