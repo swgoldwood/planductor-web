@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user
       session[:user_id] = user.id
       flash[:success] = "Signed in. Welcome #{user.name}!"
-      redirect_to root_path
+      redirect_to user
     else
       flash[:danger] = 'Invalid email or password'
       render 'new'
