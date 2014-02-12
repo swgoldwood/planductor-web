@@ -1,12 +1,12 @@
-class ValidateTarball
+class ValidatePlanner < ValidateBase
   @queue = :tarball_queue
 
   def self.perform(planner_id)
-      logger = Logger.new 'log/resque.log'
+      logger = Logger.new('log/validate_planner_resque.log')
 
       planner = Planner.find(planner_id)
 
-      temp_dir = "/tmp/#{planner.name.tr(" ", "_")}"
+      temp_dir = create_random_tmp(planner.name)
       out_temp_dir = temp_dir + '/out'
 
       logger.info("Temp dir: #{temp_dir}, Out dir: #{out_temp_dir}")

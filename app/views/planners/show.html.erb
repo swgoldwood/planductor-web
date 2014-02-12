@@ -26,6 +26,15 @@
             <%= link_to comp.name, competition_path(comp), class: 'list-group-item' %>
           <% end %>
         </ul>
+        <% else %>
+        <p>No competitions</p>
+        <% end %>
+
+        <% if allow? 'planners', 'edit', @planner %>
+          <%= link_to 'Edit', edit_planner_path(@planner), class: 'btn btn-default' %>
+        <% end %>
+        <% if allow? 'planners', 'destroy', @planner %>
+          <%= link_to 'Delete', planner_path(@planner), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
         <% end %>
       </div>
     </div>

@@ -1,0 +1,17 @@
+<% if @planner.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@planner.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+  <ul>
+  <% @planner.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+  </ul>
+</div>
+<% end %>
+<%= bootstrap_form_for(@planner) do |f| %>
+    <%= f.hidden_field :user_id %>
+    <%= f.text_field :name %>
+    <%= f.file_field :tarball %>
+    <%= f.submit 'Submit' %>
+<% end %>
