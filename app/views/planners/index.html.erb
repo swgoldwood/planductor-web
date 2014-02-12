@@ -3,3 +3,14 @@
 <div class="list-group">
   <%= render @planners %>
 </div>
+
+<% if allow? "planners", "new" %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <b>Add new planner..</b>
+    </div>
+    <div class="panel-body">
+      <%= link_to 'Add Planner', new_planner_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>
