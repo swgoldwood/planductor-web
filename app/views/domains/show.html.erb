@@ -1,15 +1,51 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <b>Name:</b>
-  <%= @domain.name %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @domain.user_id %>
-</p>
-
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1>Domain: <%= @domain.name %></h1>
+      </div>
+      <div class="panel-body">
+        <p>
+          <b>Name:</b>
+          <%= @domain.name %>
+        </p>
+        <p>
+          <b>Submitter:</b>
+          <%= link_to @domain.user.name, @domain.user %>
+        </p>
+        <p>
+          <b>Validation Status:</b>
+          <%= @domain.status_string %>
+        </p>
+        <p>
+          <b>Number of problems:</b>
+          <%= @domain.number_of_problems %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2>domain.pddl</h2>
+      </div>
+      <div class="panel-body">
+        <% if @domain.plain_text.nil? %>
+          <div class="alert alert-warning">
+            No domain.pddl file read!
+          </div>
+        <% else %>
+          <div class="code-block">
+            <pre><%= @domain.plain_text %></pre>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%= link_to 'Edit', edit_domain_path(@domain) %> |
 <%= link_to 'Back', domains_path %>

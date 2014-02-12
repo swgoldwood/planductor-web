@@ -1,21 +1,16 @@
-<h1>Listing domains</h1>
+<h1>Domains</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>User</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="list-group">
+  <%= render @domains %>
+</div>
 
-<% @domains.each do |domain| %>
-  <tr>
-    <td><%= domain.name %></td>
-    <td><%= domain.user_id %></td>
-    <td><%= link_to 'Show', domain %></td>
-    <td><%= link_to 'Edit', edit_domain_path(domain) %></td>
-    <td><%= link_to 'Destroy', domain, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<% if allow? "domains", "new" %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <b>Add new domain..</b>
+    </div>
+    <div class="panel-body">
+      <%= link_to 'Add Domain', new_domain_path, class: 'btn btn-default' %>
+    </div>
+  </div>
 <% end %>
-</table>
