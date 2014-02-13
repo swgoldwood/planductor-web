@@ -7,3 +7,9 @@
     margin: 10px 10px;
     font-family: 'Menlo', 'Courier New', 'Terminal', monospace;
 }
+
+.problem-list {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}

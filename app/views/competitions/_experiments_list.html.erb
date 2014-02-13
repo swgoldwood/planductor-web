@@ -16,9 +16,9 @@
       <% @experiments.each do |ex| %>
         <tr>
           <td><%= link_to ex.domain.name, ex.domain %></td>
-          <td><%= ex.problem_number %></td>
+          <td><%= link_to ex.problem.name, ex.problem %></td>
           <% unless @competition.published %>
-          <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
+            <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
           <% end %>
         </tr>
       <% end %>

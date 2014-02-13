@@ -3,29 +3,52 @@ class Permission
   def initialize(user = nil)
     #admins and organisers
     if user and user.admin
+
+      #admins have full access
       allow_all
     elsif user and user.organiser
+
+      #organisers can create competitions
       allow :competitions, [:new, :create]
+
+      #organisers can edit and destroy their own competitions
       allow :competitions, [:edit, :update, :destroy] do |competition|
         competition.user_id == user.id
       end
+
+      #organisers have full access on domains
       allow :domains, [:all]
     end
 
     #normal users
     if user
+
+      #users can add planners
       allow :planners, [:new, :create]
-      allow :planners, [:edit, :update, :destroy] do |planner|
+
+      #users can edit their own planners if it is not a participant in a competition
+      allow :planners, [:edit, :update] do |planner|
+        planner.user_id == user.id and planner.competitions.count == 0
+      end
+
+      #users can destroy their own planners
+      allow :planners, [:destroy] do |planner|
         planner.user_id == user.id
       end
+
+      #users can edit and destroy themselves
       allow :users, [:edit, :update, :destroy] do |user|
         user.id == user.id
       end
+
+      #users can add participants to competitions
       allow :participants, [:create]
     end
 
-    #guests
+    #guests can see all through index and show methods
     allow [:competitions, :domains, :planners, :users, :sessions, :participants], [:index, :show]
+
+    #guests can create and destroy sessions (sign in/ sign out)
     allow :sessions, [:create, :destroy, :new]
   end
 

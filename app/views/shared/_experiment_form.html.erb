@@ -2,11 +2,11 @@
   <%= f.hidden_field :competition_id %>
   <div class="field">
     <%= f.label :domain_id %><br />
-    <%= f.collection_select(:domain_id, @all_domains, :id, :name, {}, {class: 'form-control'}) %>
+    <%= f.collection_select(:domain_id, @domains, :id, :name, {}, {class: 'form-control'}) %>
   </div>
   <div class="field">
-    <%= f.label :problem_number %><br />
-    <%= f.select(:problem_number, (1..100), class: 'form-control') %>
+    <%= f.label :problem_id %><br />
+    <%= f.select(:problem_id, @problems.collect {|p| [p.name, p.id]}, class: 'form-control') %>
   </div>
-  <%= f.submit "Add Experiment", class: "btn btn-large btn-default" %>
+  <%= f.submit "Add Experiment", class: "btn btn-large btn-default", id: "experiment_submit" %>
 <% end %>

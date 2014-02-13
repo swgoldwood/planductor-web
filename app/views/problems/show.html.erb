@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1>Problem: <%= @problem.name %></h1>
+      </div>
+      <div class="panel-body">
+        <p>
+          <b>Name:</b>
+          <%= @problem.name %>
+        </p>
+        <p>
+          <b>Domain:</b>
+          <%= link_to @problem.domain.name, @problem.domain %>
+        </p>
+        <p>
+          <b>Problem Number:</b>
+          <%= @problem.problem_number %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2><%= @problem.name %></h2>
+      </div>
+      <div class="panel-body">
+        <% if @problem.plain_text.nil? %>
+          <div class="alert alert-warning">
+            No file read!
+          </div>
+        <% else %>
+          <div class="code-block">
+            <pre><%= @problem.plain_text %></pre>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= link_to 'Back to Domain', @problem.domain %>

@@ -30,6 +30,24 @@
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading">
+        <h2>Problems</h2>
+      </div>
+      <div class="panel-body">
+        <section class="problem-list">
+          <ul>
+            <% @problems.each do |problem| %>
+              <li><%= link_to problem.name, problem %></li>
+            <% end %>
+          <ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
         <h2>domain.pddl</h2>
       </div>
       <div class="panel-body">
@@ -47,5 +65,7 @@
   </div>
 </div>
 
-<%= link_to 'Edit', edit_domain_path(@domain) %> |
-<%= link_to 'Back', domains_path %>
+<% if allow? 'domains', 'edit' %>
+  <%= link_to 'Edit', edit_domain_path(@domain) %> |
+<% end %>
+<%= link_to 'All Domains', domains_path %>

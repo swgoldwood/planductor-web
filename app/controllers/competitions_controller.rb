@@ -22,7 +22,8 @@ class CompetitionsController < ApplicationController
       end
     else
       @experiment = @competition.experiments.build
-      @all_domains = Domain.all
+      @domains = Domain.all.reject{ |d| d.problems.count == 0 }
+      @problems = Problem.all
     end
 
     respond_to do |format|

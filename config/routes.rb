@@ -1,6 +1,6 @@
 PlanductorWeb::Application.routes.draw do
+  get "problems/show"
   get "sessions/new"
-
   get "participants/create"
   get "participants/destroy"
 
@@ -9,7 +9,10 @@ PlanductorWeb::Application.routes.draw do
   resources :planners
   resources :sessions
   resources :participants
-  resources :domains
+  resources :domains do
+    get 'problem_list', :on => :member
+  end
+  resources :problems
   resources :experiments
 
   root to: 'users#index'

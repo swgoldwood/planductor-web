@@ -14,6 +14,7 @@ class DomainsController < ApplicationController
   # GET /domains/1.json
   def show
     @domain = Domain.find(params[:id])
+    @problems = @domain.problems
 
     respond_to do |format|
       format.html # show.html.erb
@@ -79,6 +80,15 @@ class DomainsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to domains_url }
       format.json { head :no_content }
+    end
+  end
+
+  def problem_list
+    @domain = Domain.find(params[:id])
+    @problems = @domain.problems
+
+    respond_to do |format|
+      format.json { render json: @problems }
     end
   end
 

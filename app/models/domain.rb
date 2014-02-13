@@ -3,6 +3,7 @@ class Domain < ActiveRecord::Base
 
   has_attached_file :tarball
 
+  has_many :problems, dependent: :destroy
   belongs_to :user
 
   validates :name, presence: true

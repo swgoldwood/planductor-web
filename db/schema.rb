@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140212112907) do
+ActiveRecord::Schema.define(:version => 20140212235622) do
 
   create_table "competitions", :force => true do |t|
     t.string   "name"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(:version => 20140212112907) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
-    t.string   "location"
     t.integer  "user_id"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
@@ -40,9 +39,9 @@ ActiveRecord::Schema.define(:version => 20140212112907) do
   create_table "experiments", :force => true do |t|
     t.integer  "competition_id"
     t.integer  "domain_id"
-    t.integer  "problem_number"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "problem_id"
   end
 
   create_table "participants", :force => true do |t|
@@ -62,6 +61,15 @@ ActiveRecord::Schema.define(:version => 20140212112907) do
     t.integer  "tarball_file_size"
     t.datetime "tarball_updated_at"
     t.string   "status"
+  end
+
+  create_table "problems", :force => true do |t|
+    t.string   "name"
+    t.integer  "problem_number"
+    t.text     "plain_text"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "domain_id"
   end
 
   create_table "users", :force => true do |t|

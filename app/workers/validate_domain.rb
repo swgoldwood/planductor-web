@@ -42,6 +42,14 @@ class ValidateDomain < ValidateBase
             logger.info('found match: ' + file + ' num: ' + $1)
             number_of_problems += 1
             found_match = true
+
+            problem = domain.problems.build
+            problem.name = "pfile#{$1}.pddl"
+            problem.problem_number = $1.to_i
+            problem.plain_text = File.read("#{out_temp_dir}/#{problem.name}")
+
+            problem.save!
+
             break
           end
         end
