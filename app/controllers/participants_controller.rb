@@ -1,4 +1,9 @@
 class ParticipantsController < ApplicationController
+
+  def show
+    @participant = Participant.find_by_id(params[:id])
+  end
+
   def create
     @planner = Planner.find_by_id(params[:participant][:planner_id])
 
@@ -10,6 +15,7 @@ class ParticipantsController < ApplicationController
 
       respond_to do |format|
         if @participant.save
+          Resque.enqueue(CreateTasks, @participant.id, @competition.id)
           flash[:success] = 'Planner was successfully added.'
           format.html { redirect_to @competition }
         else

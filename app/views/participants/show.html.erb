@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1><%= @participant.competition.name + ' participant: ' + @participant.planner.name %></h1>
+  </div>
+  <div class="panel-body">
+    <p>Informations</p>
+    <%= link_to 'Back to competition', @participant.competition, class: 'btn btn-default' %>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2>Tasks for participant</h2>
+  </div>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Task id</th>
+        <th>Domain</th>
+        <th>Problem</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @participant.tasks.each do |task| %>
+        <tr>
+          <td><%= task.id %></td>
+          <td><%= link_to task.experiment.domain.name, task.experiment.domain %></td>
+          <td><%= link_to task.experiment.problem.name, task.experiment.problem %></td>
+          <td><%= task.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

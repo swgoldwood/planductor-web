@@ -7,13 +7,15 @@
       <tr>
         <th>Planner</th>
         <th>Submitter</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
-      <% @competition.planners.each do |planner| %>
+      <% @competition.participants.each do |participant| %>
         <tr>
-          <td><%= link_to planner.name, planner %></td>
-          <td><%= link_to planner.user.name, planner.user %></td>
+          <td><%= link_to participant.planner.name, participant.planner %></td>
+          <td><%= link_to participant.planner.user.name, participant.planner.user %></td>
+          <td><%= link_to 'participant details', participant %></td>
         </tr>
       <% end %>
     </tbody>

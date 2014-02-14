@@ -46,7 +46,7 @@ class Permission
     end
 
     #guests can see all through index and show methods
-    allow [:competitions, :domains, :planners, :users, :sessions, :participants], [:index, :show]
+    allow [:competitions, :domains, :problems, :planners, :users, :sessions, :participants], [:index, :show]
 
     #guests can create and destroy sessions (sign in/ sign out)
     allow :sessions, [:create, :destroy, :new]
