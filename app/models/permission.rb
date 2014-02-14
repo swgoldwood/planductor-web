@@ -50,6 +50,8 @@ class Permission
 
     #guests can create and destroy sessions (sign in/ sign out)
     allow :sessions, [:create, :destroy, :new]
+
+    allow :static_pages, [:all]
   end
 
   def allow?(controller, action, resource = nil)

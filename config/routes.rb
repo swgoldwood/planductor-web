@@ -15,7 +15,7 @@ PlanductorWeb::Application.routes.draw do
   resources :problems
   resources :experiments
 
-  root to: 'users#index'
+  root to: 'static_pages#home'
 
   match '/sign_in',  to: 'sessions#new'
   match '/sign_out', to: 'sessions#destroy'

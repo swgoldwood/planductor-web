@@ -3,4 +3,7 @@ class Participant < ActiveRecord::Base
 
   belongs_to :competition
   belongs_to :planner
+
+  validates :competition_id, presence: :true
+  validates :planner_id, presence: true
 end
