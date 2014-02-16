@@ -3,7 +3,12 @@
     <h1><%= @participant.competition.name + ' participant: ' + @participant.planner.name %></h1>
   </div>
   <div class="panel-body">
-    <p>Informations</p>
+    <p>
+      <b>User:</b> <%= link_to @participant.planner.user.name, @participant.planner.user %>
+    </p>
+    <p>
+      <b>Planner:</b> <%= link_to @participant.planner.name, @participant.planner %>
+    </p>
     <%= link_to 'Back to competition', @participant.competition, class: 'btn btn-default' %>
   </div>
 </div>

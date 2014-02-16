@@ -1,16 +1,20 @@
 <h1>Domains</h1>
 
-<div class="list-group">
-  <%= render @domains %>
-</div>
-
-<% if allow? "domains", "new" %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <b>Add new domain..</b>
+<div class="row">
+  <div class="col-md-12">
+    <div class="list-group">
+      <%= render @domains %>
     </div>
-    <div class="panel-body">
-      <%= link_to 'Add Domain', new_domain_path, class: 'btn btn-default' %>
-    </div>
+    
+    <% if allow? "domains", "new" %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <b>Add new domain..</b>
+        </div>
+        <div class="panel-body">
+          <%= link_to 'Add Domain', new_domain_path, class: 'btn btn-default' %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
