@@ -1,4 +1,4 @@
-class ValidateDomain < ValidateBase
+class ValidateDomain
   @queue = :tarball_queue
 
   def self.perform(domain_id)

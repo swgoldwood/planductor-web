@@ -1,4 +1,4 @@
-class ValidatePlanner < ValidateBase
+class ValidatePlanner
   @queue = :tarball_queue
 
   def self.perform(planner_id)
@@ -6,7 +6,7 @@ class ValidatePlanner < ValidateBase
 
       planner = Planner.find(planner_id)
 
-      temp_dir = create_random_tmp(planner.name)
+      temp_dir = "/tmp/#{name}_#{(0...8).map { (65 + rand(26)).chr }.join}"
       out_temp_dir = temp_dir + '/out'
 
       logger.info("Temp dir: #{temp_dir}, Out dir: #{out_temp_dir}")
