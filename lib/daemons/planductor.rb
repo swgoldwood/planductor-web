@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-# You might want to change this
 #ENV["RAILS_ENV"] ||= "production"
 
 root = File.expand_path(File.dirname(__FILE__))
@@ -16,16 +15,44 @@ end
 
 logger = Logger.new('log/planductor.log')
 
+client_sockets = []
+server_socket = TCPServer.open(37123)
+
+client_sockets.push(server_socket)
+
 while($running) do
-  
-  # Replace this with your code
   logger.info "This daemon is still running at #{Time.now}.\n"
 
-  tasks = Task.all
+  #handling clients
+  read_sockets, write_sockets, error_sockets = IO.select(client_sockets, nil, nil, 10)
 
-  tasks.each do |task|
-    logger.info "task: #{task.id}"
+  if read_sockets
+
+    logger.info "read_sockets"
+
+    read_sockets.each do |read_socket|
+      if read_socket == server_socket
+        client_socket = read_socket.accept
+        ip_address = client_socket.addr[3]
+        logger.info "new socket - IP Address: #{ip_address}" 
+        client_sockets.push client_socket
+      else
+        logger.info "handling existing client"
+
+        msg = read_socket.recv(1048576)
+
+        if msg.empty?
+          logger.info "client closed"
+          read_socket.close
+          client_sockets.delete(read_socket)
+        else
+          logger.info "MSG: #{msg}"
+        end
+      end
+    end
+  else
+    logger.info "Timed out"
   end
-  
-  sleep 30
+
+  #check health for tasks
 end
