@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Ip address:</b>
+  <%= @host.ip_address %>
+</p>
+
+<p>
+  <b>Trusted:</b>
+  <%= @host.trusted %>
+</p>
+
+
+<%= link_to 'Edit', edit_host_path(@host) %> |
+<%= link_to 'Back', hosts_path %>

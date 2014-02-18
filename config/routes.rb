@@ -1,4 +1,7 @@
 PlanductorWeb::Application.routes.draw do
+  resources :hosts
+
+
   get "problems/show"
   get "sessions/new"
   get "participants/create"

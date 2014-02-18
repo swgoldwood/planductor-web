@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140214122029) do
+ActiveRecord::Schema.define(:version => 20140218105335) do
 
   create_table "competitions", :force => true do |t|
     t.string   "name"
@@ -42,6 +42,13 @@ ActiveRecord::Schema.define(:version => 20140214122029) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.integer  "problem_id"
+  end
+
+  create_table "hosts", :force => true do |t|
+    t.string   "ip_address"
+    t.boolean  "trusted"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "participants", :force => true do |t|
