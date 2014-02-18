@@ -1,0 +1,8 @@
+<a href="<%= host_path(host) %>" class="list-group-item">
+  <h4 class="list-group-item-heading"><%= host.ip_address %></h4>
+  <% if host.trusted %>
+  <p class="list-group-item-text">Trusted</p>
+  <% else %>
+  <p class="list-group-item-text">Untrusted</p>
+  <% end %>
+</a>

@@ -1,25 +1,27 @@
-<h1>Listing hosts</h1>
-
-<table>
-  <tr>
-    <th>Ip address</th>
-    <th>Trusted</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @hosts.each do |host| %>
-  <tr>
-    <td><%= host.ip_address %></td>
-    <td><%= host.trusted %></td>
-    <td><%= link_to 'Show', host %></td>
-    <td><%= link_to 'Edit', edit_host_path(host) %></td>
-    <td><%= link_to 'Destroy', host, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Host', new_host_path %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1>Hosts</h1>
+      </div>
+      <div class="panel-body">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <b>Remember...</b>
+          </div>
+          <div class="panel-body">
+            <p>
+              Only trusted IP addresses added here can be allocated tasks for evaluating planners in competitions!
+            </p>
+          </div>
+        </div>
+        <div class="list-group">
+          <%= render @hosts %>
+        </div>
+        <% if allow? "hosts", "new" %>
+          <%= link_to 'Add Trusted/Untrusted Host', new_host_path, class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
