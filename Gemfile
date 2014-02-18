@@ -10,6 +10,7 @@ gem 'bootstrap-sass', '~> 3.0.3.0'
 gem 'bootstrap_form'
 gem 'paperclip', '~> 3.0'
 gem 'resque', '1.26.pre.0'
+gem 'daemons-rails', '~> 1.2.1'
 
 group :development do
   gem 'better_errors'
@@ -43,15 +44,6 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
