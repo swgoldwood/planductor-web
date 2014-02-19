@@ -42,11 +42,23 @@ while($running) do
         msg = read_socket.recv(1048576)
 
         if msg.empty?
-          logger.info "client closed"
+          logger.info "Empty message - closing client"
           read_socket.close
           client_sockets.delete(read_socket)
         else
           logger.info "MSG: #{msg}"
+
+          response = JSON.parse(msg)
+
+          logger.info "status: #{response['status']}"
+
+          if response['status'] == 'ready'
+            if Task.available_tasks?
+              read_socket.send(Task.available_task.to_json, 0)
+            else
+              read_socket.send('No available task', 0)
+            end
+          end
         end
       end
     end
