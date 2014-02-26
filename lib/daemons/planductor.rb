@@ -21,7 +21,7 @@ server_socket = TCPServer.open(37123)
 client_sockets.push(server_socket)
 
 while($running) do
-  logger.info "This daemon is still running at #{Time.now}.\n"
+  logger.info "Planductor daemon is still running at #{Time.now}.\n"
 
   #handling clients
   read_sockets, write_sockets, error_sockets = IO.select(client_sockets, nil, nil, 10)
@@ -35,7 +35,16 @@ while($running) do
         client_socket = read_socket.accept
         ip_address = client_socket.addr[3]
         logger.info "new socket - IP Address: #{ip_address}" 
-        client_sockets.push client_socket
+
+        host = Host.find_by_ip_address(ip_address)
+
+        if host and host.trusted
+          logger.info "New connection is trusted"
+          client_sockets.push client_socket
+        else
+          logger.info "New connection is not trusted, closing socket"
+          client_socket.close
+        end
       else
         logger.info "handling existing client"
 
@@ -48,16 +57,51 @@ while($running) do
         else
           logger.info "MSG: #{msg}"
 
-          response = JSON.parse(msg)
+          msg_json = JSON.parse(msg)
 
-          logger.info "status: #{response['status']}"
+          logger.info "status: #{msg_json['status']}"
 
-          if response['status'] == 'ready'
+          if msg_json['status'] == 'ready'
+            logger.info "client is ready, checking for available task"
+
             if Task.available_tasks?
-              read_socket.send(Task.available_task.to_json, 0)
+              task = Task.available_task
+              host = Host.find_by_ip_address(read_socket.addr[3])
+
+              task.status = "working"
+              task.host_id = host.id
+              #task.start_time = Time.now
+
+              if task.save
+                response = {
+                  "status" => "ok",
+                  "task_id" => task.id,
+                  "dependencies" => {
+                    "planner" => task.participant.planner.tarball.url,
+                    "domain"  => task.experiment.domain.tarball.url,
+                    "problem_number" => task.experiment.problem.problem_number
+                  }
+                }
+                read_socket.send(response.to_json, 0)
+              else
+                logger.info "There has been an error when saving task"
+
+                read_socket.close
+                client_sockets.delete(read_socket)
+              end
             else
+              logger.info "No available task for host, closing socket"
               read_socket.send('No available task', 0)
+              read_socket.close
+
+              client_sockets.delete(read_socket)
             end
+          elsif msg_json['status'] == 'complete'
+            logger.info "Task is complete"
+            # msg_json['results'].each do |result|
+            # end
+          elsif msg_json['status'] == 'error'
+            logger.info("Error with client. Need to unassign task")
           end
         end
       end
@@ -66,5 +110,4 @@ while($running) do
     logger.info "Timed out"
   end
 
-  #check health for tasks
 end
