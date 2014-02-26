@@ -2,7 +2,7 @@ class Task < ActiveRecord::Base
   attr_accessible :experiment_id, :participant_id, :status, :host_id
 
   belongs_to :experiment
-  belongs_to :planner
+  belongs_to :participant
   belongs_to :host
 
   validates :experiment_id, presence: true

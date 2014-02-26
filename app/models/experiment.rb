@@ -1,5 +1,5 @@
 class Experiment < ActiveRecord::Base
-  attr_accessible :competition_id, :domain_id, :problem_id, :problem_number
+  attr_accessible :competition_id, :domain_id, :problem_id
 
   validates :competition_id, presence: true
   validates :domain_id, presence: true
