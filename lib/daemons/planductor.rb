@@ -33,10 +33,11 @@ while($running) do
     read_sockets.each do |read_socket|
       if read_socket == server_socket
         client_socket = read_socket.accept
-        ip_address = client_socket.addr[3]
-        logger.info "new socket - IP Address: #{ip_address}" 
+        sock_domain, remote_port, remote_hostname, remote_ip = client_socket.peeraddr
 
-        host = Host.find_by_ip_address(ip_address)
+        logger.info "new socket - IP Address: #{remote_ip}" 
+
+        host = Host.find_by_ip_address(remote_ip)
 
         if host and host.trusted
           logger.info "New connection is trusted"
@@ -65,8 +66,10 @@ while($running) do
             logger.info "client is ready, checking for available task"
 
             if Task.available_tasks?
+              sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
+
               task = Task.available_task
-              host = Host.find_by_ip_address(read_socket.addr[3])
+              host = Host.find_by_ip_address(remote_ip)
 
               task.status = "working"
               task.host_id = host.id
