@@ -94,13 +94,33 @@ while($running) do
               end
             else
               logger.info "No available task for host, closing socket"
-              read_socket.send('No available task', 0)
+              read_socket.send({"status" => "ok", "task_id" => nil}.to_json, 0)
               read_socket.close
 
               client_sockets.delete(read_socket)
             end
           elsif msg_json['status'] == 'complete'
             logger.info "Task is complete"
+            sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
+
+            host = Host.find_by_ip_address(remote_ip)
+            task = host.task
+
+            if not task
+              logger.info "Host doesn't have task assigned, ignoring results and closing socket"
+              read_socket.close
+              client_sockets.delete(read_socket)
+            else
+              logger.info "Host returned results"
+              logger.info msg_json.to_json
+
+              task.status = "complete"
+              task.host_id = nil
+              task.save
+
+              read_socket.send({"status" => "ok"}.to_json, 0)
+            end
+            
             # msg_json['results'].each do |result|
             # end
           elsif msg_json['status'] == 'error'
