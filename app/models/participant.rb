@@ -1,7 +1,7 @@
 class Participant < ActiveRecord::Base
   attr_accessible :competition_id, :planner_id
 
-  has_many :tasks
+  has_many :tasks, dependent: :destroy
 
   belongs_to :competition
   belongs_to :planner

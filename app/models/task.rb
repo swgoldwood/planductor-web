@@ -1,6 +1,8 @@
 class Task < ActiveRecord::Base
   attr_accessible :experiment_id, :participant_id, :status, :host_id
 
+  has_many :results, dependent: :destroy
+
   belongs_to :experiment
   belongs_to :participant
   belongs_to :host

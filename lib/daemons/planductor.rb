@@ -20,6 +20,17 @@ server_socket = TCPServer.open(37123)
 
 client_sockets.push(server_socket)
 
+#set any previously working tasks are now pending
+logger.info "Setting all previously working tasks to pending state"
+
+Task.all.each do |task|
+  if task.status == 'working'
+    task.status = 'pending'
+  end
+  task.host_id = nil
+  task.save!
+end
+
 while($running) do
   logger.info "Planductor daemon is still running at #{Time.now}.\n"
 
@@ -68,29 +79,34 @@ while($running) do
             if Task.available_tasks?
               sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
 
-              task = Task.available_task
               host = Host.find_by_ip_address(remote_ip)
 
-              task.status = "working"
-              task.host_id = host.id
-              #task.start_time = Time.now
-
-              if task.save
-                response = {
-                  "status" => "ok",
-                  "task_id" => task.id,
-                  "dependencies" => {
-                    "planner" => task.participant.planner.tarball.url,
-                    "domain"  => task.experiment.domain.tarball.url,
-                    "problem_number" => task.experiment.problem.problem_number
-                  }
-                }
-                read_socket.send(response.to_json, 0)
+              if host.task
+                logger.error "host #{remote_ip} already has task assigned"
               else
-                logger.info "There has been an error when saving task"
+                task = Task.available_task
 
-                read_socket.close
-                client_sockets.delete(read_socket)
+                task.status = "working"
+                task.host_id = host.id
+                #task.start_time = Time.now
+
+                if task.save
+                  response = {
+                    "status" => "ok",
+                    "task_id" => task.id,
+                    "dependencies" => {
+                      "planner" => task.participant.planner.tarball.url,
+                      "domain"  => task.experiment.domain.tarball.url,
+                      "problem_number" => task.experiment.problem.problem_number
+                    }
+                  }
+                  read_socket.send(response.to_json, 0)
+                else
+                  logger.info "There has been an error when saving task"
+
+                  read_socket.close
+                  client_sockets.delete(read_socket)
+                end
               end
             else
               logger.info "No available task for host, closing socket"
@@ -114,15 +130,23 @@ while($running) do
               logger.info "Host returned results"
               logger.info msg_json.to_json
 
+              msg_json['task']['results'].each do |r|
+                result = task.results.build
+                result.result_number = r['result_number']
+                result.score = r['score']
+                result.output = r['output']
+                result.valid_plan = r['valid_plan']
+                result.validation_output = r['validation_output']
+
+                result.save
+              end
+
               task.status = "complete"
               task.host_id = nil
               task.save
 
               read_socket.send({"status" => "ok"}.to_json, 0)
             end
-            
-            # msg_json['results'].each do |result|
-            # end
           elsif msg_json['status'] == 'error'
             logger.info("Error with client. Need to unassign task")
           end
