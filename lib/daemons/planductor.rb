@@ -39,14 +39,14 @@ while($running) do
 
   if read_sockets
 
-    logger.info "read_sockets"
+    logger.info "handling socket"
 
     read_sockets.each do |read_socket|
       if read_socket == server_socket
         client_socket = read_socket.accept
         sock_domain, remote_port, remote_hostname, remote_ip = client_socket.peeraddr
 
-        logger.info "new socket - IP Address: #{remote_ip}" 
+        logger.info "new socket with IP address: #{remote_ip}" 
 
         host = Host.find_by_ip_address(remote_ip)
 
@@ -63,15 +63,26 @@ while($running) do
         msg = read_socket.recv(1048576)
 
         if msg.empty?
-          logger.info "Empty message - closing client"
+          logger.info "Empty message - checking if socket has been assigned a task"
+          sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
+
+          host = Host.find_by_ip_address(remote_ip)
+          task = Task.find_by_host_id(host.id)
+
+          if task
+            logger.info "Unassigning task from host"
+            task.unassign
+            task.save
+          else
+            logger.info "No task to unassign for disconnected host"
+          end
+
           read_socket.close
           client_sockets.delete(read_socket)
         else
           logger.info "MSG: #{msg}"
 
           msg_json = JSON.parse(msg)
-
-          logger.info "status: #{msg_json['status']}"
 
           if msg_json['status'] == 'ready'
             logger.info "client is ready, checking for available task"
@@ -86,9 +97,7 @@ while($running) do
               else
                 task = Task.available_task
 
-                task.status = "working"
-                task.host_id = host.id
-                #task.start_time = Time.now
+                task.assign(host.id)
 
                 if task.save
                   response = {
@@ -141,8 +150,8 @@ while($running) do
                 result.save
               end
 
-              task.status = "complete"
-              task.host_id = nil
+              task.output = msg_json['task']['output']
+              task.unassign('complete')
               task.save
 
               read_socket.send({"status" => "ok"}.to_json, 0)
@@ -153,8 +162,6 @@ while($running) do
         end
       end
     end
-  else
-    logger.info "Timed out"
   end
 
 end
