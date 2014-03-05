@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  attr_accessible :experiment_id, :participant_id, :status, :host_id
+  attr_accessible :experiment_id, :participant_id, :status, :host_id, :output
 
   has_many :results, dependent: :destroy
 
@@ -12,6 +12,16 @@ class Task < ActiveRecord::Base
   validates_uniqueness_of :experiment_id, scope: :participant_id
 
   after_initialize :init
+
+  def assign(host_id)
+    self.status = 'working'
+    self.host_id = host_id
+  end
+
+  def unassign(status = 'pending')
+    self.status = status
+    self.host_id = nil
+  end
 
   def self.available_tasks?
     where(status: 'pending').any?
