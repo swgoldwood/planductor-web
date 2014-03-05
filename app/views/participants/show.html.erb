@@ -23,6 +23,7 @@
         <th>Domain</th>
         <th>Problem</th>
         <th>Status</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
           <td><%= link_to task.experiment.domain.name, task.experiment.domain %></td>
           <td><%= link_to task.experiment.problem.name, task.experiment.problem %></td>
           <td><%= task.status %></td>
+          <td><%= link_to 'results', task %></td>
         </tr>
       <% end %>
     </tbody>

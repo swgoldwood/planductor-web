@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1>Result <%= @result.id %></h1>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Score</th>
+        <th>Valid plan?</th>
+        <th>Created At</th>
+        <th>Last Modified</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th><%= @result.score %></td>
+        <th><%= @result.valid_plan %></td>
+        <td><%= @result.created_at.to_s %></td>
+        <td><%= @result.updated_at.to_s %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<% if @result.output %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Plan Result</h3>
+  </div>
+  <div class="panel-body">
+    <div class="code-block">
+      <pre><%= @result.output %></pre>
+    </div>
+  </div>
+</div>
+<% end %>
+<% if @result.validation_output %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Validation Output</h3>
+  </div>
+  <div class="panel-body">
+    <div class="code-block">
+      <pre><%= @result.validation_output %></pre>
+    </div>
+  </div>
+</div>
+<% end %>

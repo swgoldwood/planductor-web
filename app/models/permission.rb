@@ -51,6 +51,9 @@ class Permission
     #guests can create and destroy sessions (sign in/ sign out)
     allow :sessions, [:all]
 
+    #guests can view tasks
+    allow :tasks, [:show]
+
     #guests can register
     allow :users, [:new, :create]
 

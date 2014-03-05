@@ -1,7 +1,7 @@
 PlanductorWeb::Application.routes.draw do
-  resources :hosts
 
-
+  get "tasks/show"
+  get "results/show"
   get "problems/show"
   get "sessions/new"
   get "participants/create"
@@ -17,6 +17,9 @@ PlanductorWeb::Application.routes.draw do
   end
   resources :problems
   resources :experiments
+  resources :tasks
+  resources :results
+  resources :hosts
 
   root to: 'static_pages#home'
 

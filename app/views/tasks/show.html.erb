@@ -1,0 +1,65 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1>Task <%= @task.id %></h1>
+  </div>
+  <div class="panel-body">
+    <h3>Experiment Details</h3>
+    <p><b>Domain:</b>  <%= link_to @task.experiment.domain.name, @task.experiment.domain %></p>
+    <p><b>Problem:</b>  <%= link_to @task.experiment.problem.name, @task.experiment.problem %></p>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Task Status</th>
+        <th>Created At</th>
+        <th>Last Modified</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @task.status %></td>
+        <td><%= @task.created_at.to_s %></td>
+        <td><%= @task.updated_at.to_s %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<% if @task.results.any? %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Task Results</h3>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Result Number</th>
+        <th>Score</th>
+        <th>Valid plan?</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @task.results.each do |result| %>
+      <tr>
+        <td><%= result.result_number %></td>
+        <td><%= result.score %></td>
+        <td><%= result.valid_plan %></td>
+        <td><%= link_to 'details', result %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
+<% if @task.output %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Task Output</h3>
+  </div>
+  <div class="panel-body">
+    <div class="code-block">
+      <pre><%= @task.output %></pre>
+    </div>
+  </div>
+</div>
+<% end %>
