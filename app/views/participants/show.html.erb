@@ -23,6 +23,7 @@
   <table class="table table-condensed table-hover">
     <thead>
       <tr>
+        <th>Experiment number</th>
         <th>Task id</th>
         <th>Domain</th>
         <th>Problem</th>
@@ -31,14 +32,17 @@
       </tr>
     </thead>
     <tbody>
+      <% count = 1 %>
       <% @participant.tasks.each do |task| %>
         <tr>
+          <td><%= count %></td>
           <td><%= task.id %></td>
           <td><%= link_to task.experiment.domain.name, task.experiment.domain %></td>
           <td><%= link_to task.experiment.problem.name, task.experiment.problem %></td>
           <td><%= task.status %></td>
           <td><%= link_to 'results', task %></td>
         </tr>
+        <% count += 1 %>
       <% end %>
     </tbody>
   </table>

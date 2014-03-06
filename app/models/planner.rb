@@ -8,8 +8,8 @@ class Planner < ActiveRecord::Base
   has_many :participants, dependent: :destroy
   has_many :competitions, through: :participants
 
-  validates :user_id, presence: true
-  validates :name, presence: true
+  validates :user_id, :name, presence: true
+  validates :name, length: { minimum: 3, maximum: 12 }
   validates :tarball, attachment_presence: true
   validates_attachment_content_type :tarball, content_type: 'application/x-tar'
 

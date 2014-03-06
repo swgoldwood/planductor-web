@@ -52,7 +52,7 @@ class Permission
     allow :sessions, [:all]
 
     #guests can view tasks
-    allow :tasks, [:show]
+    allow [:tasks, :results], [:show]
 
     #guests can register
     allow :users, [:new, :create]

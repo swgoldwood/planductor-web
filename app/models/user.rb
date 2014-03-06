@@ -2,8 +2,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation, :organiser, :admin
   attr_accessor :password, :password_confirmation
 
-  before_save :encrypt_password
-
   has_many :planners, dependent: :destroy
   has_many :domains
   has_many :competitions, dependent: :destroy
@@ -13,6 +11,8 @@ class User < ActiveRecord::Base
   validates_presence_of :email
   validates_presence_of :name
   validates_uniqueness_of :email
+
+  before_save :encrypt_password
 
   def self.authenticate(email, password)
     user = find_by_email(email.downcase)

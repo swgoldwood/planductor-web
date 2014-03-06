@@ -5,6 +5,7 @@
   <table class="table table-condensed table-hover">
     <thead>
       <tr>
+        <th>Experiment number</th>
         <th>Domain name</th>
         <th>Problem number</th>
         <% unless @competition.published %>
@@ -13,14 +14,17 @@
       </tr>
     </thead>
     <tbody>
+      <% count = 1 %>
       <% @experiments.each do |ex| %>
         <tr>
+          <td><%= count %></td>
           <td><%= link_to ex.domain.name, ex.domain %></td>
           <td><%= link_to ex.problem.name, ex.problem %></td>
           <% unless @competition.published %>
             <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
           <% end %>
         </tr>
+        <% count += 1 %>
       <% end %>
     </tbody>
   </table>

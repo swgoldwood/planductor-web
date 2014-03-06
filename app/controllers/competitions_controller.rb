@@ -20,6 +20,26 @@ class CompetitionsController < ApplicationController
       if current_user and current_user.available_planners?(@competition)
         @current_user_planners = current_user.available_planners(@competition)
       end
+
+      data_table = GoogleVisualr::DataTable.new
+      data_table.new_column('string', 'Experiment')
+
+      @competition.participants.each do |participant|
+        data_table.new_column('number', participant.planner.name)
+      end
+
+      count = 1
+      @experiments.each do |experiment|
+        row = ['Experiment ' + count.to_s]
+        @competition.participants.each do |participant|
+          row.push(participant.best_score(experiment.id))
+        end
+        data_table.add_row(row)
+        count += 1
+      end
+
+      option = { title: 'Participant Performance' }
+      @chart = GoogleVisualr::Interactive::BarChart.new(data_table, option)
     else
       @experiment = @competition.experiments.build
       @domains = Domain.all.reject{ |d| d.problems.count == 0 }
