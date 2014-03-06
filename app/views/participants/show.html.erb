@@ -1,3 +1,7 @@
+<ol class="breadcrumb">
+  <li><%= link_to @participant.competition.name, @participant.competition %></li>
+  <li class="active">Participant</li>
+</ol>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h1><%= @participant.competition.name + ' participant: ' + @participant.planner.name %></h1>
