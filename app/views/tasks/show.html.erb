@@ -38,7 +38,7 @@
     <thead>
       <tr>
         <th>Result Number</th>
-        <th>Score</th>
+        <th>Quality</th>
         <th>Valid plan?</th>
         <th>Details</th>
       </tr>
@@ -47,7 +47,7 @@
       <% @task.results.each do |result| %>
       <tr>
         <td><%= result.result_number %></td>
-        <td><%= result.score %></td>
+        <td><%= result.quality %></td>
         <td><%= result.valid_plan %></td>
         <td><%= link_to 'details', result %></td>
       </tr>

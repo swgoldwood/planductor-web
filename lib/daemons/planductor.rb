@@ -142,7 +142,7 @@ while($running) do
               msg_json['task']['results'].each do |r|
                 result = task.results.build
                 result.result_number = r['result_number']
-                result.score = r['score']
+                result.quality = r['quality']
                 result.output = r['output']
                 result.valid_plan = r['valid_plan']
                 result.validation_output = r['validation_output']

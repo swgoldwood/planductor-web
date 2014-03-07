@@ -12,7 +12,7 @@ module PlanductorChart
       row = ['Experiment ' + count.to_s]
 
       competition.participants.each do |participant|
-        row.push(participant.best_score(experiment.id))
+        row.push(participant.best_quality(experiment.id))
       end
 
       data_table.add_row(row)
@@ -41,7 +41,7 @@ module PlanductorChart
         if best_quality == nil
           row.push(nil)
         else
-          row.push(best_quality.to_f / participant.best_score(experiment.id))
+          row.push(best_quality.to_f / participant.best_quality(experiment.id))
         end
       end
 

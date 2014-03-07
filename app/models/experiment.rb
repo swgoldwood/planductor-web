@@ -15,8 +15,8 @@ class Experiment < ActiveRecord::Base
     quality = nil
     self.tasks.each do |task|
       task.results.each do |result|
-        if result.valid_plan and (quality == nil or result.score < quality)
-          quality = result.score
+        if result.valid_plan and (quality == nil or result.quality < quality)
+          quality = result.quality
         end
       end
     end
