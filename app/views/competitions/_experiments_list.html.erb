@@ -8,6 +8,7 @@
         <th>Experiment number</th>
         <th>Domain name</th>
         <th>Problem number</th>
+        <th>Cpu time</th>
         <% unless @competition.published %>
         <th>Remove?</th>
         <% end %>
@@ -20,6 +21,7 @@
           <td><%= count %></td>
           <td><%= link_to ex.domain.name, ex.domain %></td>
           <td><%= link_to ex.problem.name, ex.problem %></td>
+          <td><%= ex.cpu_time %></td>
           <% unless @competition.published %>
             <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
           <% end %>

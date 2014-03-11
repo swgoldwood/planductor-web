@@ -8,5 +8,9 @@
     <%= f.label :problem_id %><br />
     <%= f.select(:problem_id, @problems.collect {|p| [p.name, p.id]}, class: 'form-control') %>
   </div>
+  <div class="field">
+    <%= f.label :cpu_time %> (Compute time for experiment in seconds, default is 30 minutes or 1800 seconds)<br />
+    <%= f.text_field :cpu_time, value: 1800, class: 'form-control' %>
+  </div>
   <%= f.submit "Add Experiment", class: "btn btn-large btn-default", id: "experiment_submit" %>
 <% end %>

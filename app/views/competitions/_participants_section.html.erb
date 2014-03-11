@@ -1,3 +1,4 @@
+<% if @competition.participants.any? %>
 <div class="panel panel-default">
   <div class="panel-body">
     <div id="quality-chart"></div>
@@ -10,6 +11,7 @@
     <%= render_chart(@score_chart, 'score-chart') %>
   </div>
 </div>
+<% end %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3>Participants</h3>
