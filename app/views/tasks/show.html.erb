@@ -9,6 +9,7 @@
   </div>
   <div class="panel-body">
     <h3>Experiment Details</h3>
+    <p><b>Planner:</b> <%= link_to @task.participant.planner.name, @task.participant.planner %></p>
     <p><b>Domain:</b>  <%= link_to @task.experiment.domain.name, @task.experiment.domain %></p>
     <p><b>Problem:</b>  <%= link_to @task.experiment.problem.name, @task.experiment.problem %></p>
   </div>
