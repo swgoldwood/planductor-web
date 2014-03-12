@@ -1,14 +1,61 @@
 <% if @competition.participants.any? %>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <div id="quality-chart"></div>
-    <%= render_chart(@quality_chart, 'quality-chart') %>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Leaderboard Table
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Planner</th>
+            <th>User</th>
+            <th>Total Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @competition.participants.each do |participant| %>
+          <tr>
+            <td><%= link_to participant.planner.name, participant.planner %></td>
+            <td><%= link_to participant.planner.user.name, participant.planner.user %></td>
+            <td><%= 10 %></td>
+          </tr>
+          <% end %>
+        </thead>
+      </table>
+    </div>
   </div>
-</div>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <div id="score-chart"></div>
-    <%= render_chart(@score_chart, 'score-chart') %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Score Graph
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse in">
+      <div class="panel-body" id="score-chart">
+        <%= render_chart(@score_chart, 'score-chart') %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Quality Values Graph
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse in">
+      <div class="panel-body" id="quality-chart">
+        <%= render_chart(@quality_chart, 'quality-chart') %>
+      </div>
+    </div>
   </div>
 </div>
 <% end %>
