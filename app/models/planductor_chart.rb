@@ -38,8 +38,10 @@ module PlanductorChart
       best_quality = experiment.best_quality
 
       competition.participants.each do |participant|
-        if best_quality == nil
-          row.push(nil)
+        participant_best_quality = participant.best_quality(experiment.id)
+
+        if participant_best_quality == nil or best_quality == nil
+          row.push(0)
         else
           row.push(best_quality.to_f / participant.best_quality(experiment.id))
         end
