@@ -60,7 +60,8 @@ while($running) do
       else
         logger.info "handling existing client"
 
-        msg = read_socket.recv(1048576)
+        #keep recieving message until timeout
+        msg = read_socket.recv(1024)
 
         if msg.empty?
           logger.info "Empty message - checking if socket has been assigned a task"
@@ -103,6 +104,7 @@ while($running) do
                   response = {
                     "status" => "ok",
                     "task_id" => task.id,
+                    "cpu_time" => task.experiment.cpu_time,
                     "dependencies" => {
                       "planner" => task.participant.planner.tarball.url,
                       "domain"  => task.experiment.domain.tarball.url,
@@ -136,8 +138,22 @@ while($running) do
               read_socket.close
               client_sockets.delete(read_socket)
             else
+              read_socket.send({"status" => "ok"}.to_json, 0)
+
+              res_msg = read_socket.read(1048576)
+
+              if res_msg.empty?
+                logger.info "recv is empty for task returns"
+                read_socket.close
+                client_sockets.delete(read_socket)
+              end
+
+              msg_json = JSON.parse(res_msg)
+
               logger.info "Host returned results"
-              logger.info msg_json.to_json
+              logger.info res_msg
+
+              logger.info "STATUS: #{msg_json['status']}"
 
               msg_json['task']['results'].each do |r|
                 result = task.results.build
@@ -154,7 +170,8 @@ while($running) do
               task.unassign('complete')
               task.save
 
-              read_socket.send({"status" => "ok"}.to_json, 0)
+              read_socket.close
+              client_sockets.delete(read_socket)
             end
           elsif msg_json['status'] == 'error'
             logger.info("Error with client. Need to unassign task")
