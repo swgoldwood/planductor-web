@@ -12,6 +12,7 @@
     <p><b>Planner:</b> <%= link_to @task.participant.planner.name, @task.participant.planner %></p>
     <p><b>Domain:</b>  <%= link_to @task.experiment.domain.name, @task.experiment.domain %></p>
     <p><b>Problem:</b>  <%= link_to @task.experiment.problem.name, @task.experiment.problem %></p>
+    <p><b>Status:</b> <%= @task.status %>
   </div>
   <table class="table table-condensed">
     <thead>
@@ -30,11 +31,11 @@
     </tbody>
   </table>
 </div>
-<% if @task.results.any? %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3>Task Results</h3>
   </div>
+  <% if @task.results.any? %>
   <table class="table table-condensed">
     <thead>
       <tr>
@@ -55,8 +56,12 @@
       <% end %>
     </tbody>
   </table>
+  <% else %>
+  <div class="panel-body">
+    <b>No Results</b>
+  </div>
+  <% end %>
 </div>
-<% end %>
 <% if @task.output %>
 <div class="panel panel-default">
   <div class="panel-heading">

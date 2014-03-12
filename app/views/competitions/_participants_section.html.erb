@@ -68,7 +68,7 @@
       <tr>
         <th>Planner</th>
         <th>Submitter</th>
-        <th>Details</th>
+        <th>Results</th>
       </tr>
     </thead>
     <tbody>
@@ -76,7 +76,7 @@
         <tr>
           <td><%= link_to participant.planner.name, participant.planner %></td>
           <td><%= link_to participant.planner.user.name, participant.planner.user %></td>
-          <td><%= link_to 'participant details', participant %></td>
+          <td><%= link_to 'Planner results', participant %></td>
         </tr>
       <% end %>
     </tbody>
