@@ -18,11 +18,11 @@
           </tr>
         </thead>
         <tbody>
-          <% @competition.participants.each do |participant| %>
+          <% @leaderboard_entries.each do |entry| %>
           <tr>
-            <td><%= link_to participant.planner.name, participant.planner %></td>
-            <td><%= link_to participant.planner.user.name, participant.planner.user %></td>
-            <td><%= 10 %></td>
+            <td><%= link_to entry.participant.planner.name, entry.participant.planner %></td>
+            <td><%= link_to entry.participant.planner.user.name, entry.participant.planner.user %></td>
+            <td><%= entry.score %></td>
           </tr>
           <% end %>
         </thead>

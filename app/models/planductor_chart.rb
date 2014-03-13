@@ -43,7 +43,7 @@ module PlanductorChart
         if participant_best_quality == nil or best_quality == nil
           row.push(0)
         else
-          row.push(best_quality.to_f / participant.best_quality(experiment.id))
+          row.push(best_quality.to_f / participant_best_quality)
         end
       end
 

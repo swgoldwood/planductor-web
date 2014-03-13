@@ -21,6 +21,7 @@ class CompetitionsController < ApplicationController
         @current_user_planners = current_user.available_planners(@competition)
       end
 
+      @leaderboard_entries = Leaderboard.leaderboard(@competition)
       @quality_chart = PlanductorChart.quality_chart(@competition)
       @score_chart   = PlanductorChart.score_chart(@competition)
     else
