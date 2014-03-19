@@ -14,22 +14,9 @@ class Participant < ActiveRecord::Base
     task = Task.where(participant_id: self.id, experiment_id: experiment_id).first
 
     if task
-      results = task.results
-      if results.any?
-        best = nil
-
-        results.each do |result|
-          if result.valid_plan and (best == nil or result.quality < best)
-            best = result.quality
-          end
-        end
-
-        return best
-      else
-        return nil
-      end
-    else
-      return nil
+      return task.best_quality
     end
+
+    nil
   end
 end
