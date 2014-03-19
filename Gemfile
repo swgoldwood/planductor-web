@@ -12,6 +12,7 @@ gem 'google_visualr', '>= 2.1'
 gem 'paperclip', '~> 3.0'
 gem 'resque', '1.26.pre.0'
 gem 'daemons-rails', '~> 1.2.1'
+gem "rails_config"
 
 group :development do
   gem 'better_errors'
