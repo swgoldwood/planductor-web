@@ -1,5 +1,5 @@
 class Planner < ActiveRecord::Base
-  attr_accessible :name, :user_id, :tarball
+  attr_accessible :name, :user_id, :tarball, :status, :error_message
 
   has_attached_file :tarball
 

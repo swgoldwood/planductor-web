@@ -17,10 +17,23 @@
           <b>Validation Status:</b>
           <%= @domain.status_string %>
         </p>
+        <% if @domain.status == 'error' %>
+          <p>
+            <b>Error Message:</b>
+            <%= @domain.error_message %>
+          </p>
+        <% end %>
         <p>
           <b>Number of problems:</b>
           <%= @domain.number_of_problems %>
         </p>
+
+        <% if allow? 'domains', 'edit', @domain %>
+          <%= link_to 'Edit', edit_domain_path(@domain), class: 'btn btn-default' %>
+        <% end %>
+        <% if allow? 'domains', 'destroy', @domain %>
+          <%= link_to 'Delete', domain_path(@domain), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -63,8 +76,3 @@
     </div>
   </div>
 </div>
-
-<% if allow? 'domains', 'edit' %>
-  <%= link_to 'Edit', edit_domain_path(@domain) %> |
-<% end %>
-<%= link_to 'All Domains', domains_path %>

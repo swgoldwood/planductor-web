@@ -18,10 +18,14 @@ class ValidatePlanner
       system_call = "tar xf '#{temp_dir}/#{planner.tarball.original_filename}' -C '#{out_temp_dir}'" 
       system(system_call)
 
-      if File.exists?("#{out_temp_dir}/plan") and File.executable?("#{out_temp_dir}/plan")
-        planner.status = "verified"
-      else
+      if not File.exists?("#{out_temp_dir}/plan")
         planner.status = "error"
+        planner.error_message = "plan file doesn't exist"
+      elsif not File.executable?("#{out_temp_dir}/plan")
+        planner.status = "error"
+        planner.error_message = 'plan file is not executable'
+      else
+        planner.status = "verified"
       end
 
       planner.save!

@@ -15,7 +15,7 @@
         <div class="list-group">
           <%= render @planners %>
         </div>
-        <% if @user.organiser %>
+        <% if @user.organiser or @user.admin %>
         <p>
           <b>Listing user's competitions:</b>
         <p>

@@ -25,6 +25,7 @@ class ValidateDomain
       domain.plain_text = plain_text
     else 
       domain.status = 'error'
+      domain.error_message = 'Cannot find domain.pddl file'
       domain.save!
       FileUtils.rm_rf(temp_dir)
       return
@@ -66,6 +67,7 @@ class ValidateDomain
       domain.status = 'verified'
     else
       domain.status = 'error'
+      domain.error_message = 'Cannot find any problem files in the form of pfileXX.pddl, where XX is a number'
     end
 
     domain.save!

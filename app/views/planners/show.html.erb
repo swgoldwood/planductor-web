@@ -17,6 +17,12 @@
         <p>
           <b>Validation Status</b>: <%= @planner.status_string %>
         </p>
+        <% if @planner.status == 'error' %>
+          <p>
+            <b>Error Message</b>
+            <%= @planner.error_message %>
+          </p>
+        <% end %>
         <p>
           <b>Competitions entered:</b>
         </p>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140311142820) do
+ActiveRecord::Schema.define(:version => 20140320140803) do
 
   create_table "competitions", :force => true do |t|
     t.string   "name"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20140311142820) do
     t.datetime "tarball_updated_at"
     t.string   "status"
     t.text     "plain_text"
+    t.string   "error_message"
   end
 
   create_table "experiments", :force => true do |t|
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20140311142820) do
     t.integer  "tarball_file_size"
     t.datetime "tarball_updated_at"
     t.string   "status"
+    t.string   "error_message"
   end
 
   create_table "problems", :force => true do |t|

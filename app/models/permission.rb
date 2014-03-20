@@ -17,7 +17,12 @@ class Permission
       end
 
       #organisers have full access on domains
-      allow :domains, [:all]
+      allow :domains, [:new, :create]
+
+      #can only remove domains if there's an error or there are no experiments using the domain
+      allow :domains, [:edit, :update, :destroy] do |domain|
+        domain.status == 'error' or domain.experiments.count == 0
+      end
     end
 
     #normal users

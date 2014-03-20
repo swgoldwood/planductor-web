@@ -1,9 +1,10 @@
 class Domain < ActiveRecord::Base
-  attr_accessible :name, :user_id, :number_of_problems, :tarball, :status, :plain_text
+  attr_accessible :name, :user_id, :number_of_problems, :tarball, :status, :plain_text, :error_message
 
   has_attached_file :tarball
 
   has_many :problems, dependent: :destroy
+  has_many :experiments
   belongs_to :user
 
   validates :name, presence: true
@@ -20,7 +21,7 @@ class Domain < ActiveRecord::Base
       when 'verified'
         'Successfully verified! Domain can be used in competitions.'
       when 'error'
-        'There is a problem with domain uploaded. Please check documentation here'
+        'There is a problem with domain uploaded.'
       else
         'Unknown status'
     end
