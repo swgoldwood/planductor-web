@@ -18,7 +18,7 @@ class ValidatePlanner
       system_call = "tar xf '#{temp_dir}/#{planner.tarball.original_filename}' -C '#{out_temp_dir}'" 
       system(system_call)
 
-      if File.exists?("#{out_temp_dir}/plan")
+      if File.exists?("#{out_temp_dir}/plan") and File.executable?("#{out_temp_dir}/plan")
         planner.status = "verified"
       else
         planner.status = "error"
