@@ -23,6 +23,9 @@ class Permission
       allow :domains, [:edit, :update, :destroy] do |domain|
         domain.status == 'error' or domain.experiments.count == 0
       end
+
+      #organisers can get problem list for defining competitions
+      allow [:domains], [:problem_list]
     end
 
     #normal users
