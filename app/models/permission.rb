@@ -26,6 +26,9 @@ class Permission
 
       #organisers can get problem list for defining competitions
       allow [:domains], [:problem_list]
+
+      #organisers can create and destroy experiments when defining competitions
+      allow :experiments, [:new, :create, :destroy]
     end
 
     #normal users

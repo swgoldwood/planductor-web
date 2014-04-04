@@ -101,4 +101,9 @@ class CompetitionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def current_resource
+      @current_resource ||= Competition.find_by_id(params[:id]) if params[:id]
+    end
 end
