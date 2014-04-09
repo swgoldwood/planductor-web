@@ -18,12 +18,22 @@ logger = Logger.new('log/planductor.log')
 client_sockets = []
 server_socket = TCPServer.open(37123)
 
-sslContext = OpenSSL::SSL::SSLContext.new
-sslContext.cert = OpenSSL::X509::Certificate.new(File.open(Settings.ssl_cert))
-sslContext.key = OpenSSL::PKey::RSA.new(File.open(Settings.ssl_key))
-sslServer = OpenSSL::SSL::SSLServer.new(server_socket, sslContext)
+no_ssl = false
+if Settings.no_ssl
+  logger.info "Not using SSL for server"
+  no_ssl = true
+end
 
-client_sockets.push(sslServer)
+if no_ssl
+  client_sockets.push(server_socket)
+else
+  sslContext = OpenSSL::SSL::SSLContext.new
+  sslContext.cert = OpenSSL::X509::Certificate.new(File.open(Settings.ssl_cert))
+  sslContext.key = OpenSSL::PKey::RSA.new(File.open(Settings.ssl_key))
+  sslServer = OpenSSL::SSL::SSLServer.new(server_socket, sslContext)
+  
+  client_sockets.push(sslServer)
+end
 
 #set any previously working tasks as pending
 logger.info "Setting all previously working tasks to pending state"
@@ -36,9 +46,9 @@ Task.all.each do |task|
   task.save!
 end
 
-while($running) do
-  logger.info "Planductor daemon is still running at #{Time.now}.\n"
+logger.info "Now starting main process loop"
 
+while($running) do
   #handling clients
   read_sockets, write_sockets, error_sockets = IO.select(client_sockets, nil, nil, 10)
 
@@ -48,7 +58,7 @@ while($running) do
 
     read_sockets.each do |read_socket|
       logger.info read_socket.class.name
-      if read_socket.class.name == sslServer.class.name
+      if read_socket == server_socket or read_socket.class.name == sslServer.class.name
         client_socket = read_socket.accept
         sock_domain, remote_port, remote_hostname, remote_ip = client_socket.peeraddr
 
@@ -68,6 +78,11 @@ while($running) do
 
         #keep recieving message until timeout
         msg = read_socket.sysread(1024)
+        # if no_ssl
+        #   msg = read_socket.recv(1024)
+        # else
+        #   msg = read_socket.sysread(1024)
+        # end
 
         if msg.empty?
           logger.info "Empty message - checking if socket has been assigned a task"
