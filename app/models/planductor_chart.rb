@@ -9,7 +9,7 @@ module PlanductorChart
 
     count = 1 #TODO really don't like how I'm numbering the tasks per competition...
     competition.experiments.each do |experiment|
-      row = ['Experiment ' + count.to_s]
+      row = [count.to_s]
 
       competition.participants.each do |participant|
         row.push(participant.best_quality(experiment.id))
@@ -19,9 +19,9 @@ module PlanductorChart
       count += 1
     end
 
-    option = { title: 'Participant quality values for each experiment' }
+    option = { title: 'Participant quality values for each experiment', height: 400}
 
-    GoogleVisualr::Interactive::BarChart.new(data_table, option)
+    GoogleVisualr::Interactive::LineChart.new(data_table, option)
   end
 
   def self.score_chart(competition, participant=nil)
@@ -34,7 +34,7 @@ module PlanductorChart
 
     count = 1
     competition.experiments.each do |experiment|
-      row = ['Experiment ' + count.to_s]
+      row = [count.to_s]
       best_quality = experiment.best_quality
 
       competition.participants.each do |participant|
@@ -51,8 +51,8 @@ module PlanductorChart
       count += 1
     end
 
-    option = { title: 'Participant scores for each experiment', hAxis: { viewWindow: { max: 1}  } }
+    option = { title: 'Participant scores for each experiment', height: 400 }
 
-    GoogleVisualr::Interactive::BarChart.new(data_table, option)
+    GoogleVisualr::Interactive::LineChart.new(data_table, option)
   end
 end
