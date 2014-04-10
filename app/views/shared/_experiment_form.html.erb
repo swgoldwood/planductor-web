@@ -6,7 +6,7 @@
   </div>
   <div class="field">
     <%= f.label :problem_id %><br />
-    <%= f.select(:problem_id, @problems.collect {|p| [p.name, p.id]}, class: 'form-control') %>
+    <%= f.select(:problem_id, @problems.collect {|p| [p.name, p.id]}, {}, {multiple: true, class: 'form-control'}) %>
   </div>
   <div class="field">
     <%= f.label :cpu_time %> (Compute time for experiment in seconds, default is 30 minutes or 1800 seconds)<br />

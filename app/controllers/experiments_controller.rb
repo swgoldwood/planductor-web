@@ -1,12 +1,25 @@
 class ExperimentsController < ApplicationController
   def create
-    @experiment = Experiment.new(params[:experiment])
+    error_msg = ""
 
-    if @experiment.save
-      flash[:success] = 'Experiment was successfully added to competition'
-    else
-      flash[:warning] = 'Error adding experiment to competition'
+    params[:experiment][:problem_id].each do |id|
+      if not id.empty?
+        ex_args = params[:experiment]
+        ex_args[:problem_id] = id
+        @experiment = Experiment.new(ex_args)
+        
+        if not @experiment.save
+          error_msg << " Adding problem_id #{id.to_s} failed, args= #{ex_args.to_s} |"
+        end
+      end
     end
+
+    if error_msg.empty?
+      flash[:success] = 'Experiments were successfully added to competition'
+    else
+      flash[:warning] = error_msg
+    end
+
     redirect_to @experiment.competition
   end
 
