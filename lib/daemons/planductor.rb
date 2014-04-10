@@ -77,7 +77,13 @@ while($running) do
         logger.info "handling existing client"
 
         #keep recieving message until timeout
-        msg = read_socket.sysread(1024)
+        msg = ""
+        
+        begin
+          msg = read_socket.sysread(1024)
+        rescue EOFError
+          logger.error "EOF with socket"
+        end
         # if no_ssl
         #   msg = read_socket.recv(1024)
         # else
@@ -114,31 +120,27 @@ while($running) do
 
               host = Host.find_by_ip_address(remote_ip)
 
-              if host.task
-                logger.error "host #{remote_ip} already has task assigned"
-              else
-                task = Task.available_task
+              task = Task.available_task
 
-                task.assign(host.id)
+              task.assign(host.id)
 
-                if task.save
-                  response = {
-                    "status" => "ok",
-                    "task_id" => task.id,
-                    "cpu_time" => task.experiment.cpu_time,
-                    "dependencies" => {
-                      "planner" => task.participant.planner.tarball.url,
-                      "domain"  => task.experiment.domain.tarball.url,
-                      "problem_number" => task.experiment.problem.problem_number
-                    }
+              if task.save
+                response = {
+                  "status" => "ok",
+                  "task_id" => task.id,
+                  "cpu_time" => task.experiment.cpu_time,
+                  "dependencies" => {
+                    "planner" => task.participant.planner.tarball.url,
+                    "domain"  => task.experiment.domain.tarball.url,
+                    "problem_number" => task.experiment.problem.problem_number
                   }
-                  read_socket.syswrite(response.to_json)
-                else
-                  logger.info "There has been an error when saving task"
+                }
+                read_socket.syswrite(response.to_json)
+              else
+                logger.info "There has been an error when saving task"
 
-                  read_socket.close
-                  client_sockets.delete(read_socket)
-                end
+                read_socket.close
+                client_sockets.delete(read_socket)
               end
             else
               logger.info "No available task for host, closing socket"
@@ -151,49 +153,42 @@ while($running) do
             logger.info "Task is complete"
             sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
 
-            host = Host.find_by_ip_address(remote_ip)
-            task = host.task
+            read_socket.syswrite({"status" => "ok"}.to_json)
 
-            if not task
-              logger.info "Host doesn't have task assigned, ignoring results and closing socket"
-              read_socket.close
-              client_sockets.delete(read_socket)
-            else
-              read_socket.syswrite({"status" => "ok"}.to_json)
+            res_msg = read_socket.read(1048576)
 
-              res_msg = read_socket.read(1048576)
-
-              if res_msg.empty?
-                logger.info "recv is empty for task returns"
-                read_socket.close
-                client_sockets.delete(read_socket)
-              end
-
-              msg_json = JSON.parse(res_msg)
-
-              logger.info "Host returned results"
-              logger.info res_msg
-
-              logger.info "STATUS: #{msg_json['status']}"
-
-              msg_json['task']['results'].each do |r|
-                result = task.results.build
-                result.result_number = r['result_number']
-                result.quality = r['quality']
-                result.output = r['output']
-                result.valid_plan = r['valid_plan']
-                result.validation_output = r['validation_output']
-
-                result.save
-              end
-
-              task.output = msg_json['task']['output']
-              task.unassign('complete')
-              task.save
-
+            if res_msg.empty?
+              logger.info "recv is empty for task returns"
               read_socket.close
               client_sockets.delete(read_socket)
             end
+
+            msg_json = JSON.parse(res_msg)
+
+            task = Task.find_by_id(msg_json['task']['task_id'])
+
+            logger.info "Host returned results"
+            logger.info res_msg
+
+            logger.info "STATUS: #{msg_json['status']}"
+
+            msg_json['task']['results'].each do |r|
+              result = task.results.build
+              result.result_number = r['result_number']
+              result.quality = r['quality']
+              result.output = r['output']
+              result.valid_plan = r['valid_plan']
+              result.validation_output = r['validation_output']
+
+              result.save
+            end
+
+            task.output = msg_json['task']['output']
+            task.unassign('complete')
+            task.save
+
+            read_socket.close
+            client_sockets.delete(read_socket)
           elsif msg_json['status'] == 'error'
             logger.info("Error with client. Need to unassign task")
           end
