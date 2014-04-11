@@ -30,6 +30,4 @@ describe 'Competition pages' do
     end
   end
 
-  describe 'competition creation' do
-  end
 end
