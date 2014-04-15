@@ -1,20 +1,27 @@
-<h1>Domains</h1>
-
 <div class="row">
   <div class="col-md-12">
-    <div class="list-group">
-      <%= render @domains %>
-    </div>
-    
-    <% if allow? "domains", "new" %>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <b>Add new domain..</b>
-        </div>
-        <div class="panel-body">
-          <%= link_to 'Add Domain', new_domain_path, class: 'btn btn-default' %>
-        </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1>Domains</h1>
       </div>
-    <% end %>
+      <div class="panel-body">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <b>Information</b>
+          </div>
+          <div class="panel-body">
+            <p>
+              Here is the list of all Domains in the system. Click into one to see more information and problem files.
+            </p>
+          </div>
+        </div>
+        <div class="list-group">
+          <%= render @domains %>
+        </div>
+        <% if allow?(:domains, :new) %>
+          <%= link_to 'Add Domain', new_domain_path, class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
