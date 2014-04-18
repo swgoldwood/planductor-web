@@ -7,7 +7,7 @@ module PlanductorChart
       data_table.new_column('number', participant.planner.name)
     end
 
-    count = 1 #TODO really don't like how I'm numbering the tasks per competition...
+    count = 1
     competition.experiments.each do |experiment|
       row = [count.to_s]
 

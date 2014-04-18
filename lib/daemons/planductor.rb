@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-#ENV["RAILS_ENV"] ||= "production"
-
 root = File.expand_path(File.dirname(__FILE__))
 root = File.dirname(root) until File.exists?(File.join(root, 'config'))
 Dir.chdir(root)
@@ -13,12 +11,18 @@ Signal.trap("TERM") do
   $running = false
 end
 
-logger = Logger.new('log/planductor.log')
+#create planductor-server specific log
+logger = Logger.new('log/planductor-server.log')
 
 client_sockets = []
+
+#using planductor-server port of 37123
 server_socket = TCPServer.open(37123)
 
 no_ssl = false
+
+#set this in config/settings.yml to use unencrypted sockets
+#this must be same in clients connecting
 if Settings.no_ssl
   logger.info "Not using SSL for server"
   no_ssl = true
@@ -76,19 +80,14 @@ while($running) do
       else
         logger.info "handling existing client"
 
-        #keep recieving message until timeout
         msg = ""
         
+        #using sysread to read from socket rather than recv because it is same for both ssl and normal sockets
         begin
           msg = read_socket.sysread(1024)
         rescue EOFError
           logger.error "EOF with socket"
         end
-        # if no_ssl
-        #   msg = read_socket.recv(1024)
-        # else
-        #   msg = read_socket.sysread(1024)
-        # end
 
         if msg.empty?
           logger.info "Empty message - checking if socket has been assigned a task"
@@ -108,7 +107,7 @@ while($running) do
           read_socket.close
           client_sockets.delete(read_socket)
         else
-          logger.info "MSG: #{msg}"
+          logger.info "Client message: #{msg}"
 
           msg_json = JSON.parse(msg)
 
@@ -135,6 +134,7 @@ while($running) do
                     "problem_number" => task.experiment.problem.problem_number
                   }
                 }
+                logger.info "Assigning task with id #{task.id.to_s} to client"
                 read_socket.syswrite(response.to_json)
               else
                 logger.info "There has been an error when saving task"
@@ -167,10 +167,10 @@ while($running) do
 
             task = Task.find_by_id(msg_json['task']['task_id'])
 
-            logger.info "Host returned results"
+            logger.info "Client returned results:"
             logger.info res_msg
 
-            logger.info "STATUS: #{msg_json['status']}"
+            logger.info "Client status: #{msg_json['status']}"
 
             msg_json['task']['results'].each do |r|
               result = task.results.build
@@ -190,7 +190,7 @@ while($running) do
             read_socket.close
             client_sockets.delete(read_socket)
           elsif msg_json['status'] == 'error'
-            logger.info("Error with client. Need to unassign task")
+            logger.info "Error with client. Need to unassign task"
           end
         end
       end
