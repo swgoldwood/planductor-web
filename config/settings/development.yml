@@ -1,3 +1,0 @@
-ssl_key: /home/sebastian/certs/keys/key.pem
-ssl_cert: /home/sebastian/certs/keys/cert.pem
-no_ssl: true

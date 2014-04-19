@@ -17,7 +17,7 @@ logger = Logger.new('log/planductor-server.log')
 client_sockets = []
 
 #using planductor-server port of 37123
-server_socket = TCPServer.open(37123)
+server_socket = TCPServer.open(Settings.server_port)
 
 no_ssl = false
 
