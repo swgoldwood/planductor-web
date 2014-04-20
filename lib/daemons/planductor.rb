@@ -52,21 +52,23 @@ end
 
 logger.info "Now starting main process loop"
 
+#this maintains socket connection to assigned task in memory
+socket_to_task = Hash.new
+
 while($running) do
   #handling clients
   read_sockets, write_sockets, error_sockets = IO.select(client_sockets, nil, nil, 10)
 
   if read_sockets
 
-    logger.info "handling socket"
+    logger.info "Handling socket"
 
     read_sockets.each do |read_socket|
-      logger.info read_socket.class.name
       if read_socket == server_socket or read_socket.class.name == sslServer.class.name
         client_socket = read_socket.accept
         sock_domain, remote_port, remote_hostname, remote_ip = client_socket.peeraddr
 
-        logger.info "new socket with IP address: #{remote_ip}" 
+        logger.info "New client socket connection #{remote_ip}:#{remote_port.to_s}" 
 
         host = Host.find_by_ip_address(remote_ip)
 
@@ -78,7 +80,9 @@ while($running) do
           client_socket.close
         end
       else
-        logger.info "handling existing client"
+        sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
+
+        logger.info "Handling existing client #{remote_ip}:#{remote_port.to_s}"
 
         msg = ""
         
@@ -90,18 +94,20 @@ while($running) do
         end
 
         if msg.empty?
-          logger.info "Empty message - checking if socket has been assigned a task"
-          sock_domain, remote_port, remote_hostname, remote_ip = read_socket.peeraddr
+          logger.info "Empty message - checking if client has been assigned a task"
 
-          host = Host.find_by_ip_address(remote_ip)
-          task = Task.find_by_host_id(host.id)
+          if socket_to_task["#{remote_ip}:#{remote_port.to_s}"]
+            logger.info "Found task assigned to client. Task id: #{socket_to_task["#{remote_ip}:#{remote_port.to_s}"].to_s}"
+            task = Task.find_by_id(socket_to_task["#{remote_ip}:#{remote_port.to_s}"])
 
-          if task
-            logger.info "Unassigning task from host"
             task.unassign
-            task.save
+            if task.save
+              logger.info "Unassigned task from client"
+            else
+              logger.error "Error unassigning task from client"
+            end
           else
-            logger.info "No task to unassign for disconnected host"
+            logger.info "No task to unassign from client"
           end
 
           read_socket.close
@@ -124,6 +130,8 @@ while($running) do
               task.assign(host.id)
 
               if task.save
+                socket_to_task["#{remote_ip.to_s}:#{remote_port.to_s}"] = task.id
+
                 response = {
                   "status" => "ok",
                   "task_id" => task.id,
@@ -191,6 +199,20 @@ while($running) do
             client_sockets.delete(read_socket)
           elsif msg_json['status'] == 'error'
             logger.info "Error with client. Need to unassign task"
+
+            if socket_to_task["#{remote_ip}:#{remote_port.to_s}"]
+              logger.info "Found task assigned to client. Task id: #{socket_to_task["#{remote_ip}:#{remote_port.to_s}"].to_s}"
+              task = Task.find_by_id(socket_to_task["#{remote_ip}:#{remote_port.to_s}"])
+
+              task.unassign
+              if task.save
+                logger.info "Unassigned task from client"
+              else
+                logger.error "Error unassigning task from client"
+              end
+            else
+              logger.info "No task to unassign from client"
+            end
           end
         end
       end
