@@ -1,4 +1,4 @@
-ssl_key: /home/sebastian/certs/keys/key.pem
-ssl_cert: /home/sebastian/certs/keys/cert.pem
+ssl_key: config/server.key
+ssl_cert: config/server.crt
 no_ssl: false
 server_port: 37123
