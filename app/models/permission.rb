@@ -7,6 +7,8 @@ class Permission
       #admins have full access
       allow_all
     elsif user and user.organiser
+      #organisers have full access to hosts
+      allow :hosts, [:all]
 
       #organisers can create competitions
       allow :competitions, [:new, :create]
