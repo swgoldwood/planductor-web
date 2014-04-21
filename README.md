@@ -16,9 +16,9 @@ Steps for setting up Planductor-web:
 
         bundle install
 
-2. This will install all the dependencies referenced in the Gemfile.
+This will install all the dependencies referenced in the Gemfile.
 
-Next, migrate the database with this command:
+2. Next, migrate the database with this command:
 
         rake db:migrate
 
