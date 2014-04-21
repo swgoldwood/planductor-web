@@ -16,13 +16,13 @@ Steps for setting up Planductor-web:
 
         bundle install
 
-This will install all the dependencies referenced in the Gemfile.
+   This will install all the dependencies referenced in the Gemfile.
 
 2. Next, migrate the database with this command:
 
         rake db:migrate
 
-This will create all the tables and constraints defined in the db/schema.rb file.  There may be an error message complaining about a lack of javascript runtime environment. If so, install nodejs through apt-get and retry.
+   This will create all the tables and constraints defined in the db/schema.rb file.  There may be an error message complaining about a lack of javascript runtime environment. If so, install nodejs through apt-get and retry.
 
 3. Prepare the test database with this command:
 
@@ -40,7 +40,7 @@ This will create all the tables and constraints defined in the db/schema.rb file
 
         rails server
 
-This sets up the web server on port 3000.
+   This sets up the web server on port 3000.
 
 ###
 
