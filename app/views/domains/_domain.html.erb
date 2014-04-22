@@ -1,4 +1,6 @@
 <a href="<%= domain_path(domain) %>" class="list-group-item">
   <h4 class="list-group-item-heading"><%= domain.name %></h4>
+  <% if domain.user %>
   <p class="list-group-item-text">Submitter: <%= domain.user.name.capitalize %></p>
+  <% end %>
 </a>

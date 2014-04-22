@@ -9,10 +9,12 @@
           <b>Name:</b>
           <%= @domain.name %>
         </p>
+        <% if @domain.user %>
         <p>
           <b>Submitter:</b>
           <%= link_to @domain.user.name, @domain.user %>
         </p>
+        <% end %>
         <p>
           <b>Validation Status:</b>
           <%= @domain.status_string %>
