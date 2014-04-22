@@ -32,7 +32,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @participant.tasks.each do |task| %>
+      <% @participant.tasks.sort_by{|x| x.experiment.experiment_number}.each do |task| %>
         <tr>
           <td><%= task.experiment.experiment_number %></td>
           <td><%= link_to task.experiment.domain.name, task.experiment.domain %></td>
