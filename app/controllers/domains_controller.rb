@@ -14,7 +14,7 @@ class DomainsController < ApplicationController
   # GET /domains/1.json
   def show
     @domain = Domain.find(params[:id])
-    @problems = @domain.problems
+    @problems = @domain.problems.sort_by { |x| x.problem_number }
 
     respond_to do |format|
       format.html # show.html.erb
@@ -85,7 +85,7 @@ class DomainsController < ApplicationController
 
   def problem_list
     @domain = Domain.find(params[:id])
-    @problems = @domain.problems
+    @problems = @domain.problems.sort_by { |x| x.problem_number }
 
     respond_to do |format|
       format.json { render json: @problems }

@@ -15,6 +15,13 @@
           <b>Description:</b><br />
           <%= @competition.description %>
         </p>
+
+        <% if allow? 'competitions', 'edit', @competition %>
+          <%= link_to 'Edit', edit_competition_path(@competition), class: 'btn btn-default' %>
+        <% end %>
+        <% if allow? 'competitions', 'destroy', @competition %>
+          <%= link_to 'Delete', competition_path(@competition), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <% end %>
       </div>
     </div>
     <% if @competition.published %>
