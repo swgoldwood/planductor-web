@@ -19,8 +19,10 @@ group :development do
   gem 'binding_of_caller'
 end
 
+gem 'pg'
+
 group :development, :test do
-  gem 'sqlite3'
+  #gem 'sqlite3'
   gem 'rspec-rails', '~> 3.0.0.beta'
 end
 

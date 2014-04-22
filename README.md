@@ -5,8 +5,45 @@ Web and server application for AI Planning competitions.
 Prerequisites:
  - Server running recent Ubuntu operating system (Should work in other main distributions but this has not been tested)
  - Ruby version 1.9.3 or above but below version 2.0 (Install using rvm: ``rvm install 1.9.3'')
+ - Postgresql + dev package installed (Install with: sudo apt-get install postgresql; sudo apt-get install libpq-dev)
  - Redis-server installed and running on default port (Install with apt-get: ``sudo apt-get install redis-server'')
  - Javascript runtime environment (Install nodejs with apt-get: ``sudo apt-get install nodejs'')
+
+###
+
+Steps for setting up database:
+
+1. Install postgresql and dev package:
+
+        sudo apt-get install postgresql
+        sudo apt-get install libpq-dev
+
+2. Switch to postgres user:
+
+        sudo su -
+        su - postgres
+
+3. Create postgresql user for planductor - use the userid that will run planductor-web:
+
+        createuser sebastian
+        Shall the new role be a superuser? (y/n) y
+
+4. Switch back to normal user and create planductor development and test databases:
+
+        psql -d postgres
+
+        psql (9.1.13)
+        Type "help" for help.
+        
+        postgres=# CREATE DATABASE planductor_development
+        postgres-# ;
+        CREATE DATABASE
+        postgres=# CREATE DATABASE planductor_test
+        postgres-# ;
+        CREATE DATABASE
+        postgres=# \q
+
+5. In planductor-web directory, modify config/database.yml and change "sebastian" to your user id.
 
 ###
 

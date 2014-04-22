@@ -50,7 +50,7 @@ class Permission
       end
 
       #users can edit and destroy themselves
-      allow :users, [:edit, :update, :destroy] do |user|
+      allow :users, [:edit, :update] do |user|
         user.id == user.id
       end
 

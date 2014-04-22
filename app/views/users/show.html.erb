@@ -23,6 +23,12 @@
           <%= render @competitions %>
         </div>
         <% end %>
+        <% if allow? 'users', 'edit', @user %>
+          <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-default' %>
+        <% end %>
+        <% if allow? 'users', 'destroy' %>
+          <%= link_to 'Delete User', user_path(@user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <% end %>
       </div>
     </div>
       <% if allow? "users", "edit", @user %>
