@@ -1,5 +1,5 @@
 class Experiment < ActiveRecord::Base
-  attr_accessible :competition_id, :domain_id, :problem_id, :cpu_time
+  attr_accessible :competition_id, :domain_id, :problem_id, :cpu_time, :experiment_number
 
   has_many :tasks
 

@@ -15,10 +15,9 @@
       </tr>
     </thead>
     <tbody>
-      <% count = 1 %>
       <% @experiments.each do |ex| %>
         <tr>
-          <td><%= count %></td>
+          <td><%= ex.experiment_number %></td>
           <td><%= link_to ex.domain.name, ex.domain %></td>
           <td><%= link_to ex.problem.name, ex.problem %></td>
           <td><%= ex.cpu_time %></td>
@@ -26,7 +25,6 @@
             <td><%= link_to content_tag(:i, '', class: 'icon-trash icon-white') + 'Delete', ex, method: :delete, class: 'btn btn-danger btn-xs remove_fields' %></td>
           <% end %>
         </tr>
-        <% count += 1 %>
       <% end %>
     </tbody>
   </table>

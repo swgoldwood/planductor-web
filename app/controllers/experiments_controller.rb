@@ -1,11 +1,23 @@
 class ExperimentsController < ApplicationController
   def create
-    error_msg = ""
+    competition = Competition.find_by_id(params[:experiment][:competition_id])
 
+    experiment_number = 0
+    if competition.experiments.any?
+      competition.experiments.each do |ex|
+        experiment_number = ex.experiment_number if experiment_number < ex.experiment_number
+      end
+    end
+
+    error_msg = ""
     params[:experiment][:problem_id].each do |id|
       if not id.empty?
+        experiment_number += 1
+
         ex_args = params[:experiment]
         ex_args[:problem_id] = id
+        ex_args[:experiment_number] = experiment_number
+
         @experiment = Experiment.new(ex_args)
         
         if not @experiment.save

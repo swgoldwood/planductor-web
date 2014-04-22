@@ -7,16 +7,14 @@ module PlanductorChart
       data_table.new_column('number', participant.planner.name)
     end
 
-    count = 1
-    competition.experiments.each do |experiment|
-      row = [count.to_s]
+    competition.experiments.sort_by{|x| x.experiment_number}.each do |experiment|
+      row = [experiment.experiment_number.to_s]
 
       competition.participants.each do |participant|
         row.push(participant.best_quality(experiment.id))
       end
 
       data_table.add_row(row)
-      count += 1
     end
 
     option = { title: 'Participant quality values for each experiment', height: 400}
@@ -32,9 +30,8 @@ module PlanductorChart
       data_table.new_column('number', participant.planner.name)
     end
 
-    count = 1
-    competition.experiments.each do |experiment|
-      row = [count.to_s]
+    competition.experiments.sort_by{|x| x.experiment_number}.each do |experiment|
+      row = [experiment.experiment_number.to_s]
       best_quality = experiment.best_quality
 
       competition.participants.each do |participant|
@@ -48,7 +45,6 @@ module PlanductorChart
       end
 
       data_table.add_row(row)
-      count += 1
     end
 
     option = { title: 'Participant scores for each experiment', height: 400 }

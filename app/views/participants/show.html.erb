@@ -32,17 +32,15 @@
       </tr>
     </thead>
     <tbody>
-      <% count = 1 %>
       <% @participant.tasks.each do |task| %>
         <tr>
-          <td><%= count %></td>
+          <td><%= task.experiment.experiment_number %></td>
           <td><%= link_to task.experiment.domain.name, task.experiment.domain %></td>
           <td><%= link_to task.experiment.problem.name, task.experiment.problem %></td>
           <td><%= task.status %></td>
           <td><%= link_to 'results', task %></td>
           <td><%= task.best_quality %></td>
         </tr>
-        <% count += 1 %>
       <% end %>
     </tbody>
   </table>

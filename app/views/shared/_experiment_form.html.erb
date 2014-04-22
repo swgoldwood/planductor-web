@@ -1,5 +1,6 @@
 <%= form_for(@experiment) do |f| %>
   <%= f.hidden_field :competition_id %>
+  <%= f.hidden_field :experiment_number %>
   <div class="field">
     <%= f.label :domain_id %><br />
     <%= f.collection_select(:domain_id, @domains, :id, :name, {}, {class: 'form-control'}) %>
